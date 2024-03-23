@@ -7,7 +7,7 @@ export class Engine {
 	private _strokes: Stroke[];
 	private _cursorPos: [number, number] | null;
 	private _color: string;
-    private _eraser: boolean;
+	private _eraser: boolean;
 
 	public constructor(public readonly canvas: HTMLCanvasElement) {
 		this.ctx = canvas.getContext('2d')!;
@@ -42,17 +42,18 @@ export class Engine {
 		this._tick();
 	}
 
-	private _tick(): void {
-		this._af = requestAnimationFrame(() => {
-			this._tick();
-		});
-	}
-
 	public updateColor(color: string): void {
 		this._color = color;
 	}
 
 	public toggleEraser(): void {
-        this._eraser = !this._eraser;
-    };
+		this._eraser = !this._eraser;
+	}
+
+	private _tick(): void {
+		this._af = requestAnimationFrame(() => {
+			this._tick();
+		});
+	}
 }
+
