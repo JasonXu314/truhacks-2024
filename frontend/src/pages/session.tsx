@@ -25,7 +25,6 @@ const Session = () => {
 	const router = useRouter();
 
 	useEffect(() => {
-		console.log('run 1');
 		const token = localStorage.getItem('token');
 		if (!localStorage.getItem('token')) {
 			// router.push('/signin');
@@ -38,53 +37,49 @@ const Session = () => {
 			}
 			setInit(false);
 		});
+
+		if (!router.query.otp) {
+			console.error('no OTP');
+		} else {
+			// const socket = new WebSocket(`${process.env.NEXT_PUBLIC_BACKEND_URL!.replace('http', 'ws')}/gateway`);
+			const socket = new WebSocket(`ws://localhost:5000/gateway`);
+
+			socket.addEventListener('open', () => {
+				console.log('socket open');
+
+				socket.send(JSON.stringify({ event: 'CLAIM', data: { otp: router.query.otp } }));
+
+				socket.addEventListener(
+					'message',
+					(evt) => {
+						const msg = JSON.parse(evt.data);
+
+						console.log(msg);
+
+						if (msg.type === 'CLAIM_ACK') {
+							console.log('claim success');
+
+							socket.addEventListener('message', (evt) => {
+								const msg = JSON.parse(evt.data);
+
+								console.log(msg);
+							});
+						}
+					},
+					{ once: true }
+				);
+			});
+
+			socket.addEventListener('error', (evt) => {
+				console.log('socket error', evt);
+			});
+
+			socket.addEventListener('close', (evt) => {
+				console.log('socket died', evt);
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
-
-	// useEffect(() => {
-	// 	console.log('run');
-	// 	if (!router.query.otp) {
-	// 		console.error('no OTP');
-	// 	} else {
-	// 		console.log('hi', router.query.otp);
-	// 		// const socket = new WebSocket(`${process.env.NEXT_PUBLIC_BACKEND_URL!.replace('http', 'ws')}/gateway`);
-	// 		const socket = new WebSocket(`ws://localhost:5000/gateway`);
-
-	// 		socket.addEventListener('open', () => {
-	// 			console.log('socket open');
-
-	// 			socket.send(JSON.stringify({ event: 'CLAIM', data: { otp: router.query.otp } }));
-
-	// 			socket.addEventListener(
-	// 				'message',
-	// 				(evt) => {
-	// 					const msg = JSON.parse(evt.data);
-
-	// 					console.log(msg);
-
-	// 					if (msg.type === 'CLAIM_ACK') {
-	// 						console.log('claim success');
-
-	// 						socket.addEventListener('message', (evt) => {
-	// 							const msg = JSON.parse(evt.data);
-
-	// 							console.log(msg);
-	// 						});
-	// 					}
-	// 				},
-	// 				{ once: true }
-	// 			);
-	// 		});
-
-	// 		socket.addEventListener('error', (evt) => {
-	// 			console.log('socket error', evt);
-	// 		});
-
-	// 		socket.addEventListener('close', (evt) => {
-	// 			console.log('socket died', evt);
-	// 		});
-	// 	}
-	// 	// eslint-disable-next-line react-hooks/exhaustive-deps
-	// }, []);
 
 	const endSession = () => {};
 
