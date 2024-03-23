@@ -1,27 +1,28 @@
 import { Engine } from '@/lib/engine';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface Props {
-    color: string
+	color: string;
 }
 
 const Canvas: React.FC<Props> = ({ color }) => {
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
-    const [engineState, setEngineState] = useState<Engine>();
+	const engineRef = useRef<Engine | null>(null);
 
 	useEffect(() => {
 		if (canvasRef.current !== null) {
 			canvasRef.current.width = canvasRef.current.offsetWidth;
 			canvasRef.current.height = canvasRef.current.offsetHeight;
 			const engine = new Engine(canvasRef.current);
-            setEngineState(engine);
 			engine.start();
+
+			engineRef.current = engine;
 		}
 	}, []);
 
-    useEffect(() => {
-        engineState?.updateColor(color)
-    }, [color])
+	useEffect(() => {
+		engineRef.current?.updateColor(color);
+	}, [color]);
 
 	return (
 		<canvas
@@ -30,9 +31,10 @@ const Canvas: React.FC<Props> = ({ color }) => {
 			}}
 			width={800}
 			height={600}
-			className='bg-white w-full h-full cursor-pen'
+			className="bg-white w-full h-full cursor-pen"
 		/>
 	);
 };
 
 export default Canvas;
+

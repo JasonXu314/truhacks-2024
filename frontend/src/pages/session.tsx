@@ -23,6 +23,7 @@ const Session = () => {
 	const router = useRouter();
 
 	useEffect(() => {
+		console.log('run 1');
 		const token = localStorage.getItem('token');
 		if (!localStorage.getItem('token')) {
 			// router.push('/signin');
@@ -35,6 +36,52 @@ const Session = () => {
 			}
 			setInit(false);
 		});
+	}, []);
+
+	useEffect(() => {
+		console.log('run');
+		if (!router.query.otp) {
+			console.error('no OTP');
+		} else {
+			console.log('hi', router.query.otp);
+			// const socket = new WebSocket(`${process.env.NEXT_PUBLIC_BACKEND_URL!.replace('http', 'ws')}/gateway`);
+			const socket = new WebSocket(`ws://localhost:5000/gateway`);
+
+			socket.addEventListener('open', () => {
+				console.log('socket open');
+
+				socket.send(JSON.stringify({ event: 'CLAIM', data: { otp: router.query.otp } }));
+
+				socket.addEventListener(
+					'message',
+					(evt) => {
+						const msg = JSON.parse(evt.data);
+
+						console.log(msg);
+
+						if (msg.type === 'CLAIM_ACK') {
+							console.log('claim success');
+
+							socket.addEventListener('message', (evt) => {
+								const msg = JSON.parse(evt.data);
+
+								console.log(msg);
+							});
+						}
+					},
+					{ once: true }
+				);
+			});
+
+			socket.addEventListener('error', (evt) => {
+				console.log('socket error', evt);
+			});
+
+			socket.addEventListener('close', (evt) => {
+				console.log('socket died', evt);
+			});
+		}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
 	const endSession = () => {};
@@ -66,22 +113,22 @@ const Session = () => {
 	}
 
 	return (
-		<div className='flex flex-col w-2/3 mx-auto h-full min-h-screen gap-3 justify-center py-8'>
-			<div className='absolute top-10 left-20'>
-				<p className=''>EducateAll</p>
+		<div className="flex flex-col w-2/3 mx-auto h-full min-h-screen gap-3 justify-center py-8">
+			<div className="absolute top-10 left-20">
+				<p className="">EducateAll</p>
 			</div>
-			<p className='text-text text-4xl font-bold text-center'>
-				Welcome, {name}, to your <span className='text-blue'>Tutoring Session!</span>
+			<p className="text-text text-4xl font-bold text-center">
+				Welcome, {name}, to your <span className="text-blue">Tutoring Session!</span>
 			</p>
-			<div className='flex border-[1px] border-blue rounded-lg bg-[#E1E1F6] h-full '>
-				<div className='h-full w-full p-4'>
+			<div className="flex border-[1px] border-blue rounded-lg bg-[#E1E1F6] h-full ">
+				<div className="h-full w-full p-4">
 					{/* <div className='h-full w-full bg-white'></div> */}
-					<Canvas color={color}/>
+					<Canvas color={color} />
 				</div>
-				<div className='flex flex-col justify-between px-4 py-8 gap-4 w-1/3'>
+				<div className="flex flex-col justify-between px-4 py-8 gap-4 w-1/3">
 					<div>
 						<p>Eric Wong (Tutor)</p>
-						{stream && <video className='w-full border-2 border-blue border-solid' playsInline ref={userVideo} autoPlay />}
+						{stream && <video className="w-full border-2 border-blue border-solid" playsInline ref={userVideo} autoPlay />}
 					</div>
 					{/* <div>
 						<p>Aiturgan Talant (Student)</p>
@@ -89,15 +136,15 @@ const Session = () => {
 					</div> */}
 				</div>
 			</div>
-			<div className='h-24 w-3/4 bg-blue mx-auto rounded-lg flex gap-8 items-center justify-center px-8'>
-				<Button onClick={() => setColor('blue')} className='bg-white text-blue hover:bg-[#F2F2F2]'>
+			<div className="h-24 w-3/4 bg-blue mx-auto rounded-lg flex gap-8 items-center justify-center px-8">
+				<Button onClick={() => setColor('blue')} className="bg-white text-blue hover:bg-[#F2F2F2]">
 					Change color
 				</Button>
-				{cameraOn && <BsCameraVideo color='white' size={32} className='cursor-pointer' onClick={toggleCamera} />}
-				{!cameraOn && <BsCameraVideoOff color='#E14040' size={32} className='cursor-pointer' onClick={toggleCamera} />}
-				{micOn && <BsMic color='white' size={32} className='cursor-pointer' onClick={toggleMic} />}
-				{!micOn && <BsMicMute color='#E14040' size={32} className='cursor-pointer' onClick={toggleMic} />}
-				<Button onClick={() => endSession()} className='bg-white text-blue hover:bg-[#F2F2F2]'>
+				{cameraOn && <BsCameraVideo color="white" size={32} className="cursor-pointer" onClick={toggleCamera} />}
+				{!cameraOn && <BsCameraVideoOff color="#E14040" size={32} className="cursor-pointer" onClick={toggleCamera} />}
+				{micOn && <BsMic color="white" size={32} className="cursor-pointer" onClick={toggleMic} />}
+				{!micOn && <BsMicMute color="#E14040" size={32} className="cursor-pointer" onClick={toggleMic} />}
+				<Button onClick={() => endSession()} className="bg-white text-blue hover:bg-[#F2F2F2]">
 					End session
 				</Button>
 			</div>
@@ -106,3 +153,4 @@ const Session = () => {
 };
 
 export default Session;
+

@@ -50,10 +50,12 @@ const Student = () => {
 		api.post('/api/topics/request', {
 			description: question,
 			fields: [field],
-			subjects: [subject]
+			subjects: [subject],
+			token: localStorage.getItem('token')
 		})
 			.then((resp) => {
 				console.log(resp);
+				router.push(`/session?otp=${resp.data.otp}`);
 				setOpen(true);
 			})
 			.catch((err) => {
@@ -66,15 +68,15 @@ const Student = () => {
 	}
 
 	return (
-		<div className='flex flex-col w-2/3 mx-auto h-full gap-10 justify-center '>
+		<div className="flex flex-col w-2/3 mx-auto h-full gap-10 justify-center ">
 			<SpringModal isOpen={open} setIsOpen={setOpen} />
-			<p className='text-text text-4xl font-bold'>
-				Welcome, {name}, to your <span className='text-blue'>Student Hub!</span>
+			<p className="text-text text-4xl font-bold">
+				Welcome, {name}, to your <span className="text-blue">Student Hub!</span>
 			</p>
-			<div className='flex border-[1px] border-blue rounded-lg h-[55%] bg-[#E1E1F6]'>
-				<div className='flex flex-col border-r-[1px] border-r-blue w-[90%] p-8 gap-5 h-full'>
-					<p className='text-4xl text-blue font-medium'>Ask your question...</p>
-					<div className='flex gap-5'>
+			<div className="flex border-[1px] border-blue rounded-lg h-[55%] bg-[#E1E1F6]">
+				<div className="flex flex-col border-r-[1px] border-r-blue w-[90%] p-8 gap-5 h-full">
+					<p className="text-4xl text-blue font-medium">Ask your question...</p>
+					<div className="flex gap-5">
 						<div>
 							<p>Field</p>
 							<Select
@@ -84,10 +86,9 @@ const Student = () => {
 									setSubject(fieldList[id - 1].subjects[0].id);
 									setSubjectList(fieldList.find((el) => el.id === id)?.subjects);
 								}}
-								value={field.toString()}
-							>
-								<SelectTrigger className='w-[180px]'>
-									<SelectValue placeholder='None' />
+								value={field.toString()}>
+								<SelectTrigger className="w-[180px]">
+									<SelectValue placeholder="None" />
 								</SelectTrigger>
 								<SelectContent>
 									{fieldList.map((field) => (
@@ -105,10 +106,9 @@ const Student = () => {
 									let id = Number(e);
 									setSubject(id);
 								}}
-								value={subject.toString()}
-							>
-								<SelectTrigger className='w-[180px]'>
-									<SelectValue placeholder='None' />
+								value={subject.toString()}>
+								<SelectTrigger className="w-[180px]">
+									<SelectValue placeholder="None" />
 								</SelectTrigger>
 								<SelectContent>
 									{subjectList?.map((subject) => (
@@ -121,33 +121,33 @@ const Student = () => {
 						</div>
 					</div>
 
-					<div className='h-full flex flex-col'>
+					<div className="h-full flex flex-col">
 						<p>Question</p>
 						<Textarea
-							className='h-full max-h-full resize-none focus:outline-none'
-							placeholder='How do I calculate velocity?'
-							id='question'
+							className="h-full max-h-full resize-none focus:outline-none"
+							placeholder="How do I calculate velocity?"
+							id="question"
 							value={question}
 							onChange={(e) => setQuestion(e.target.value)}
 						/>
 					</div>
-					<Button onClick={() => requestTutor()} className='bg-blue text-white w-36 h-[5em] hover:bg-[#3631C9] mx-auto'>
+					<Button onClick={() => requestTutor()} className="bg-blue text-white w-36 h-[5em] hover:bg-[#3631C9] mx-auto">
 						Request
 					</Button>
 				</div>
-				<div className='flex flex-col items-center w-2/5 p-8 justify-around'>
-					<p className='text-text text-4xl'>Guidelines</p>
-					<div className='flex items-center gap-6'>
-						<GrCamera color='#6C63FF' size={56} />
-						<p className='text-textSimple text-lg'>Turn your camera on and check your surroundings</p>
+				<div className="flex flex-col items-center w-2/5 p-8 justify-around">
+					<p className="text-text text-4xl">Guidelines</p>
+					<div className="flex items-center gap-6">
+						<GrCamera color="#6C63FF" size={56} />
+						<p className="text-textSimple text-lg">Turn your camera on and check your surroundings</p>
 					</div>
-					<div className='flex items-center gap-6'>
-						<GrVolume color='#6C63FF' size={48} />
-						<p className='text-textSimple text-lg'>Check your sound and try to sit in a quiet area</p>
+					<div className="flex items-center gap-6">
+						<GrVolume color="#6C63FF" size={48} />
+						<p className="text-textSimple text-lg">Check your sound and try to sit in a quiet area</p>
 					</div>
-					<div className='flex items-center gap-6'>
-						<GrGroup color='#6C63FF' size={48} />
-						<p className='text-textSimple text-lg'>Be respectful and keep the tutor&apos;s time in mind</p>
+					<div className="flex items-center gap-6">
+						<GrGroup color="#6C63FF" size={48} />
+						<p className="text-textSimple text-lg">Be respectful and keep the tutor&apos;s time in mind</p>
 					</div>
 				</div>
 			</div>
@@ -156,3 +156,4 @@ const Student = () => {
 };
 
 export default Student;
+
