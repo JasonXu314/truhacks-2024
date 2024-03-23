@@ -1,20 +1,22 @@
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { UserContext } from '@/contexts/UserContext';
 import { IField, ISubject } from '@/interfaces/interfaces';
 import api from '@/services/axiosConfig';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { GrCamera, GrGroup, GrVolume } from 'react-icons/gr';
 
 const Student = () => {
-	const [name, setName] = useState('');
 	const [init, setInit] = useState(true);
 	const [subject, setSubject] = useState(1);
 	const [field, setField] = useState(1);
 	const [subjectList, setSubjectList] = useState<ISubject[] | undefined>([]);
 	const [fieldList, setFieldList] = useState<IField[]>([]);
 	const [question, setQuestion] = useState('');
+
+	const { name } = useContext(UserContext);
 
 	const router = useRouter();
 
@@ -24,25 +26,15 @@ const Student = () => {
 			router.push('/signin');
 		}
 
-		api.get(`/api/users/me?token=${token}`)
+		api.get('/api/fields')
 			.then((resp) => {
-				console.log(resp.data);
-				setName(resp.data.name);
-				api.get('/api/fields')
-					.then((resp2) => {
-						setFieldList(resp2.data);
-						setSubjectList(resp2.data[0].subjects);
-						setInit(false);
-					})
-					.catch((err) => {
-						console.log(err);
-					});
+				setFieldList(resp.data);
+				setSubjectList(resp.data[0].subjects);
+				setInit(false);
 			})
 			.catch((err) => {
 				console.log(err);
 			});
-
-		setInit(false); // comment out later
 	}, [router]);
 
 	const requestTutor = () => {
