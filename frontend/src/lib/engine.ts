@@ -1,15 +1,20 @@
 import { Stroke } from './stroke';
 
+const PEN = typeof window === 'undefined' ? ({} as any) : new Image(18, 18);
+PEN.src = '/img/pen.png';
+
 export class Engine {
 	public readonly ctx: CanvasRenderingContext2D;
 
 	private _af: number | null;
 	private _strokes: Stroke[];
+	private _cursorPos: [number, number] | null;
 
 	public constructor(public readonly canvas: HTMLCanvasElement) {
 		this.ctx = canvas.getContext('2d')!;
 		this._af = null;
 		this._strokes = [];
+		this._cursorPos = null;
 
 		canvas.addEventListener('mousedown', (evt) => {
 			if (evt.target === canvas) {
@@ -24,7 +29,20 @@ export class Engine {
 				canvas.addEventListener('mousemove', moveListener);
 				canvas.addEventListener('mouseup', () => canvas.removeEventListener('mousemove', moveListener));
 				canvas.addEventListener('mouseout', () => canvas.removeEventListener('mousemove', moveListener));
+
+				if (evt.button === 2) {
+					console.log(this._strokes);
+				}
 			}
+		});
+
+		canvas.addEventListener('mouseover', () => {
+			const moveListener = (evt: MouseEvent) => {
+				this._cursorPos = [evt.offsetX, evt.offsetY];
+			};
+
+			canvas.addEventListener('mousemove', moveListener);
+			canvas.addEventListener('mouseout', () => canvas.removeEventListener('mousemove', moveListener));
 		});
 	}
 
@@ -38,6 +56,10 @@ export class Engine {
 
 			this.ctx.clearRect(0, 0, 1200, 800);
 			this._strokes.forEach((stroke) => stroke.render(this.ctx));
+
+			if (this._cursorPos !== null) {
+				this.ctx.drawImage(PEN, this._cursorPos[0], this._cursorPos[1] - 18, 18, 18);
+			}
 		});
 	}
 }
