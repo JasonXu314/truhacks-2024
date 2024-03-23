@@ -1,0 +1,5 @@
+button[aria-busy='true'][aria-disabled='true'] {
+	pointer-events: all;
+	opacity: 0.5;
+}
+
