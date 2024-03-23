@@ -73,15 +73,9 @@ const config = {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 			},
 			cursor: {
-<<<<<<< Updated upstream
 				pen: 'url(/img/pen.png) 0 45, default'
 			}
 		}
-=======
-				pen: 'url(/img/pen.png), default',
-			},
-		},
->>>>>>> Stashed changes
 	},
 	plugins: [require('tailwindcss-animate')],
 } satisfies Config;
