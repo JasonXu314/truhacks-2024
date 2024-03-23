@@ -8,6 +8,6 @@
     }
     html,
     body {
-        @apply h-full;
+        @apply h-full bg-[#F1F1FD];
     }
 }

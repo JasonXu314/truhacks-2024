@@ -5,7 +5,7 @@ const sans = Open_Sans({ subsets: ['latin'] });
 
 const Layout = ({ children }: { children: JSX.Element }) => {
 	return (
-		<div className={`bg-[#F1F1FD] h-full ${sans.className} flex flex-col`}>
+		<div className={`h-full ${sans.className} flex flex-col`}>
 			<Navbar />
 			{children}
 		</div>
