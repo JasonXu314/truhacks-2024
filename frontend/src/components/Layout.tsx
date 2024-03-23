@@ -8,18 +8,6 @@ const Layout = ({ children }: { children: JSX.Element }) => {
 	const router = useRouter();
 
 	return (
-<<<<<<< Updated upstream
-		<>
-			<div className='bg-[#6567D6] opacity-[5%] fixed top-[-40%] left-[-5%]aspect-square w-[40%] rounded-full blur-lg'></div>
-			<div className='bg-[#D9D9D9] opacity-[18%] fixed top-[20%] right-[-5%] aspect-square w-[40%] rounded-full blur-lg'></div>
-			<div className={`h-full ${sans.className} flex flex-col z-50`}>
-				<div className='z-50 h-full flex flex-col'>
-					{!router.pathname.startsWith('/session') && <Navbar />}
-					{children}
-				</div>
-			</div>
-		</>
-=======
 		<div className={`h-full ${sans.className} flex flex-col`}>
 			<div className="bg-[#6567D6] opacity-[5%] fixed top-[-40%] left-[-5%]aspect-square w-[40%] rounded-full blur-lg"></div>
 			{!router.pathname.startsWith('/signin') && (
@@ -29,7 +17,6 @@ const Layout = ({ children }: { children: JSX.Element }) => {
 			{!router.pathname.startsWith('/session') && !router.pathname.startsWith('/signin') && !router.pathname.startsWith('/signup') && <Navbar />}
 			{children}
 		</div>
->>>>>>> Stashed changes
 	);
 };
 
