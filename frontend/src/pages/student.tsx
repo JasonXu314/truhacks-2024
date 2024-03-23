@@ -54,7 +54,7 @@ const Student = () => {
 		})
 			.then((resp) => {
 				console.log(resp);
-				setOpen(true);
+				router.push('/session')
 			})
 			.catch((err) => {
 				console.log(err);
@@ -67,7 +67,6 @@ const Student = () => {
 
 	return (
 		<div className='flex flex-col w-2/3 mx-auto h-full gap-10 justify-center '>
-			<SpringModal isOpen={open} setIsOpen={setOpen} />
 			<p className='text-text text-4xl font-bold'>
 				Welcome, {name}, to your <span className='text-blue'>Student Hub!</span>
 			</p>

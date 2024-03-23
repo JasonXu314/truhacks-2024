@@ -2,7 +2,16 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Dispatch, SetStateAction, useState } from 'react';
 import { FiAlertCircle } from 'react-icons/fi';
 import BarLoader from './BarLoader';
+import { useRouter } from 'next/router';
+
 const SpringModal = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: Dispatch<SetStateAction<boolean>> }) => {
+    const router = useRouter();
+
+    const cancelRequest = () => {
+        router.push('/student');
+        setIsOpen(false);
+    }
+
 	return (
 		<AnimatePresence>
 			{isOpen && (
@@ -33,7 +42,7 @@ const SpringModal = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: Dispat
 
 							<div className='flex gap-2'>
 								<button
-									onClick={() => setIsOpen(false)}
+									onClick={cancelRequest}
 									className='bg-transparent hover:bg-white/10 transition-colors text-white font-semibold w-full py-2 rounded'
 								>
 									Cancel request
