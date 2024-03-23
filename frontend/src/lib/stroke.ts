@@ -1,7 +1,20 @@
 export class Stroke {
-	constructor(public pts: [number, number][]) {}
+	public readonly id: string;
 
-	public extend(ctx: CanvasRenderingContext2D, pt: [number, number], color: string, eraser: boolean): void {
+	constructor(public pts: [number, number][], id?: string) {
+		if (id) {
+			this.id = id;
+		} else {
+			const buf = new Uint8Array(16);
+			crypto.getRandomValues(buf);
+
+			this.id = Array.from(buf)
+				.map((byte) => byte.toString(16))
+				.join('');
+		}
+	}
+
+	public extend(ctx: CanvasRenderingContext2D, pt: [number, number], color: string): void {
 		ctx.beginPath();
 		ctx.strokeStyle = color;
 		ctx.moveTo(...this.pts.at(-1)!);
@@ -10,4 +23,11 @@ export class Stroke {
 
 		this.pts.push(pt);
 	}
+
+	public toPlain(): { id: string; pts: [number, number][] } {
+		const { id, pts } = this;
+
+		return { id, pts };
+	}
 }
+

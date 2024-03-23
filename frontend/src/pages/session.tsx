@@ -20,6 +20,7 @@ const Session = () => {
 	const [eraserEquipped, setEraserEquipped] = useState(false);
 
 	const userVideo = useRef<any>(null);
+	const socketRef = useRef<WebSocket | null>(null);
 	// const partnerVideo = useRef<any>(null);
 
 	const router = useRouter();
@@ -64,6 +65,8 @@ const Session = () => {
 
 								console.log(msg);
 							});
+
+							socketRef.current = socket;
 						}
 					},
 					{ once: true }
@@ -137,7 +140,7 @@ const Session = () => {
 			<div className="flex border-[1px] border-blue rounded-lg bg-[#E1E1F6] h-full ">
 				<div className="h-full w-full p-4">
 					{/* <div className='h-full w-full bg-white'></div> */}
-					<Canvas color={color} eraserEquipped={eraserEquipped} />
+					<Canvas color={color} eraserEquipped={eraserEquipped} socketRef={socketRef} />
 				</div>
 				<div className="flex flex-col justify-between px-4 py-8 gap-4 w-1/3">
 					<div>

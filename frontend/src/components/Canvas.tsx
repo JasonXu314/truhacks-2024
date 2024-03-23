@@ -1,25 +1,26 @@
 import { Engine } from '@/lib/engine';
-import { useEffect, useRef } from 'react';
+import { MutableRefObject, useEffect, useRef } from 'react';
 
 interface Props {
 	color: string;
 	eraserEquipped: boolean;
+	socketRef: MutableRefObject<WebSocket | null>;
 }
 
-const Canvas: React.FC<Props> = ({ color, eraserEquipped }) => {
+const Canvas: React.FC<Props> = ({ color, eraserEquipped, socketRef }) => {
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 	const engineRef = useRef<Engine | null>(null);
 
 	useEffect(() => {
-		if (canvasRef.current !== null) {
+		if (canvasRef.current !== null && socketRef.current !== null) {
 			canvasRef.current.width = canvasRef.current.offsetWidth;
 			canvasRef.current.height = canvasRef.current.offsetHeight;
-			const engine = new Engine(canvasRef.current);
+			const engine = new Engine(canvasRef.current, socketRef);
 			engine.start();
 
 			engineRef.current = engine;
 		}
-	}, []);
+	}, [socketRef]);
 
 	useEffect(() => {
 		engineRef.current?.updateColor(color);
