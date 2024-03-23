@@ -1,0 +1,29 @@
+:has(> span.ripple) {
+	position: relative;
+	overflow: hidden;
+}
+
+:has(> span.ripple) > :first-child {
+	margin-top: 0;
+}
+
+:has(> span.ripple) > :not(span.ripple):last-of-type {
+	margin-bottom: 0;
+}
+
+span.ripple {
+	position: absolute;
+	border-radius: 50%;
+	transform: scale(0);
+	animation: ripple 600ms linear;
+	background-color: rgba(255, 255, 255, 0.2);
+	pointer-events: none;
+}
+
+@keyframes ripple {
+	to {
+		transform: scale(4);
+		opacity: 0;
+	}
+}
+
