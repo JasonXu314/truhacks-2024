@@ -25,6 +25,7 @@ const Session = () => {
 	const router = useRouter();
 
 	useEffect(() => {
+        console.log('hi')
 		const token = localStorage.getItem('token');
 		if (!localStorage.getItem('token')) {
 			// router.push('/signin');
