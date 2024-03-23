@@ -36,7 +36,6 @@ const Call = () => {
 		});
 
 		peer.on('stream', (stream) => {
-			console.log('dasdasda2222');
 			if (partnerVideo.current) {
 				partnerVideo.current.srcObject = stream;
 			}

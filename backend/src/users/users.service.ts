@@ -27,6 +27,10 @@ export class UsersService implements AuthDataSource {
 		}
 	}
 
+	public async getAll(): Promise<User[]> {
+		return this.db.user.findMany();
+	}
+
 	public async auth(token: string): Promise<User | null> {
 		return this.db.user.findUnique({ where: { token } });
 	}

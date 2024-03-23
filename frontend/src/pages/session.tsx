@@ -1,16 +1,19 @@
 import Canvas from '@/components/Canvas';
 import SpringModal from '@/components/Modal';
 import { Button } from '@/components/ui/button';
+import api from '@/services/axiosConfig';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { BsCameraVideo, BsCameraVideoOff, BsEraserFill, BsMic, BsMicMute } from 'react-icons/bs';
-import { LuScreenShare } from 'react-icons/lu';
+import { LuScreenShare, LuScreenShareOff } from 'react-icons/lu';
+
 const Session = () => {
 	const [name, setName] = useState('');
 	const [init, setInit] = useState(true);
 	const [open, setOpen] = useState(true);
 	const [micOn, setMicOn] = useState(true);
 	const [cameraOn, setCameraOn] = useState(true);
+	const [screenShareOn, setScreenShareOn] = useState(false);
 
 	const [stream, setStream] = useState<MediaStream>();
 	// const [callerSignal, setCallerSignal] = useState<string>('');
@@ -39,6 +42,10 @@ const Session = () => {
 			setInit(false);
 		});
 
+		api.post('/api/topics/offer', { token, data: 'put offer here' }).then((res) => {
+			const peerOffer = JSON.parse(res.data);
+		});
+
 		if (!router.query.otp) {
 			console.error('no OTP');
 		} else {
@@ -59,12 +66,6 @@ const Session = () => {
 
 						if (msg.type === 'CLAIM_ACK') {
 							console.log('claim success');
-
-							socket.addEventListener('message', (evt) => {
-								const msg = JSON.parse(evt.data);
-
-								console.log(msg);
-							});
 
 							socketRef.current = socket;
 						}
@@ -89,12 +90,10 @@ const Session = () => {
 	const toggleCamera = () => {
 		if (cameraOn && stream) {
 			setCameraOn(false);
-			// stream.getTracks().forEach((track) => track.stop());
 			stream.getVideoTracks()[0].enabled = false;
 		} else if (stream) {
 			setCameraOn(true);
 			stream.getVideoTracks()[0].enabled = true;
-			// stream.getTracks().forEach((track) => track.enabled());
 		}
 	};
 
@@ -114,14 +113,26 @@ const Session = () => {
 	};
 
 	const shareScreen = () => {
-		navigator.mediaDevices.getDisplayMedia({}).then((stream) => {
-			setStream(stream);
-			if (userVideo.current) {
-				userVideo.current.srcObject = stream;
-			}
-			// setScreenStream(stream);
-		});
+		if (screenShareOn) {
+			navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
+				setStream(stream);
+				if (userVideo.current) {
+					userVideo.current.srcObject = stream;
+				}
+			});
+		} else {
+			navigator.mediaDevices.getDisplayMedia({}).then((stream) => {
+				setStream(stream);
+				if (userVideo.current) {
+					userVideo.current.srcObject = stream;
+				}
+				// setScreenStream(stream);
+			});
+		}
+		setScreenShareOn(!screenShareOn);
 	};
+
+	// peer stuff
 
 	if (init) {
 		return;
@@ -201,7 +212,8 @@ const Session = () => {
 						<BsEraserFill color="white" size={43}></BsEraserFill>
 					</div>
 				</div>
-				<LuScreenShare color="white" size={32} className="cursor-pointer flex-shrink-0" onClick={shareScreen}></LuScreenShare>
+				{!screenShareOn && <LuScreenShare color="white" size={32} className="cursor-pointer flex-shrink-0" onClick={shareScreen}></LuScreenShare>}
+				{screenShareOn && <LuScreenShareOff color="white" size={32} className="cursor-pointer flex-shrink-0" onClick={shareScreen}></LuScreenShareOff>}
 				{cameraOn && <BsCameraVideo color="white" size={32} className="cursor-pointer flex-shrink-0" onClick={toggleCamera} />}
 				{!cameraOn && <BsCameraVideoOff color="#E14040" size={32} className="cursor-pointer flex-shrink-0" onClick={toggleCamera} />}
 				{micOn && <BsMic color="white" size={32} className="cursor-pointer flex-shrink-0" onClick={toggleMic} />}
