@@ -24,6 +24,7 @@ const Form = () => {
 	const [error, setError] = useState('');
 
 	const createAccount = () => {
+        console.log(process.env.NEXT_PUBLIC_BACKEND_URL)
 		if (password != confirmPassword) {
 			setError("Passwords don't match");
 			return;
