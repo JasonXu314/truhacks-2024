@@ -2,10 +2,11 @@ import { Engine } from '@/lib/engine';
 import { useEffect, useRef, useState } from 'react';
 
 interface Props {
-    color: string
+    color: string;
+    eraserEquipped: boolean;
 }
 
-const Canvas: React.FC<Props> = ({ color }) => {
+const Canvas: React.FC<Props> = ({ color, eraserEquipped }) => {
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
     const [engineState, setEngineState] = useState<Engine>();
 
@@ -21,7 +22,11 @@ const Canvas: React.FC<Props> = ({ color }) => {
 
     useEffect(() => {
         engineState?.updateColor(color)
-    }, [color])
+    }, [color, engineState]);
+
+    useEffect(() => {
+        engineState?.toggleEraser();
+    }, [eraserEquipped, engineState])
 
 	return (
 		<canvas

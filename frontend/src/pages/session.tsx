@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useRouter } from 'next/router';
 import { useEffect, useRef, useState } from 'react';
 import { BsCameraVideo, BsCameraVideoOff, BsEraserFill, BsMic, BsMicMute } from 'react-icons/bs';
+import { LuScreenShare } from 'react-icons/lu';
 const Session = () => {
 	const [name, setName] = useState('');
 	const [init, setInit] = useState(true);
@@ -38,16 +39,7 @@ const Session = () => {
 		});
 	}, []);
 
-	const endSession = () => {
-		navigator.mediaDevices.getDisplayMedia({}).then((stream) => {
-			setStream(stream);
-			if (userVideo.current) {
-				console.log('a');
-				userVideo.current.srcObject = stream;
-			}
-			// setScreenStream(stream);
-		});
-	};
+	const endSession = () => {};
 
 	const toggleCamera = () => {
 		if (cameraOn && stream) {
@@ -71,20 +63,31 @@ const Session = () => {
 		}
 	};
 
-    const changeColor = (newColor: string) => {
-        setColor(newColor);
-        setEraserEquipped(false);
-    }
+	const changeColor = (newColor: string) => {
+		setColor(newColor);
+		setEraserEquipped(false);
+	};
+
+	const shareScreen = () => {
+		navigator.mediaDevices.getDisplayMedia({}).then((stream) => {
+			setStream(stream);
+			if (userVideo.current) {
+				userVideo.current.srcObject = stream;
+			}
+			// setScreenStream(stream);
+		});
+	};
 
 	if (init) {
 		return;
 	}
 
 	return (
-		<div className='flex flex-col w-2/3 mx-auto h-full min-h-screen gap-3 justify-center py-8'>
+		<div className='flex flex-col w-3/4 mx-auto h-full min-h-screen gap-3 justify-center py-8'>
 			<SpringModal isOpen={open} setIsOpen={setOpen} />
-			<div className='absolute top-10 left-20'>
-				<p className=''>EducateAll</p>
+			<div className='flex items-center flex-row gap-2 absolute top-6 left-10'>
+				<img src='img/logo.png' alt='Logo EducateAll' width='36' height='36'></img>
+				<p className='font-bold text-xl text-blue'>EducateAll</p>
 			</div>
 			<p className='text-text text-4xl font-bold text-center'>
 				Welcome, {name}, to your <span className='text-blue'>Tutoring Session!</span>
@@ -92,7 +95,7 @@ const Session = () => {
 			<div className='flex border-[1px] border-blue rounded-lg bg-[#E1E1F6] h-full '>
 				<div className='h-full w-full p-4'>
 					{/* <div className='h-full w-full bg-white'></div> */}
-					<Canvas color={color} />
+					<Canvas color={color} eraserEquipped={eraserEquipped} />
 				</div>
 				<div className='flex flex-col justify-between px-4 py-8 gap-4 w-1/3'>
 					<div>
@@ -105,7 +108,7 @@ const Session = () => {
 					</div> */}
 				</div>
 			</div>
-			<div className='h-24 w-3/4 bg-blue mx-auto rounded-lg flex gap-6 items-center justify-center px-8'>
+			<div className='h-24 w-[95%] bg-blue mx-auto rounded-lg flex gap-6 items-center justify-center px-8'>
 				<div className='flex gap-2 border-r-[1.5px] h-full items-center px-8 flex-grow'>
 					<div className={`${color === 'black' && !eraserEquipped && 'border-b-[2.5px]'} p-2 cursor-pointer`}>
 						<div
@@ -160,11 +163,11 @@ const Session = () => {
 						<BsEraserFill color='white' size={43}></BsEraserFill>
 					</div>
 				</div>
-
-				{cameraOn && <BsCameraVideo color='white' size={32} className='cursor-pointer' onClick={toggleCamera} />}
-				{!cameraOn && <BsCameraVideoOff color='#E14040' size={32} className='cursor-pointer' onClick={toggleCamera} />}
-				{micOn && <BsMic color='white' size={32} className='cursor-pointer' onClick={toggleMic} />}
-				{!micOn && <BsMicMute color='#E14040' size={32} className='cursor-pointer' onClick={toggleMic} />}
+				<LuScreenShare color='white' size={32} className='cursor-pointer flex-shrink-0' onClick={shareScreen}></LuScreenShare>
+				{cameraOn && <BsCameraVideo color='white' size={32} className='cursor-pointer flex-shrink-0' onClick={toggleCamera} />}
+				{!cameraOn && <BsCameraVideoOff color='#E14040' size={32} className='cursor-pointer flex-shrink-0' onClick={toggleCamera} />}
+				{micOn && <BsMic color='white' size={32} className='cursor-pointer flex-shrink-0' onClick={toggleMic} />}
+				{!micOn && <BsMicMute color='#E14040' size={32} className='cursor-pointer flex-shrink-0' onClick={toggleMic} />}
 				<Button onClick={() => endSession()} className='bg-white text-blue hover:bg-[#F2F2F2]'>
 					End session
 				</Button>
