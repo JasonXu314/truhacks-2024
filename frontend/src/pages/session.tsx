@@ -60,12 +60,6 @@ const Session = () => {
 						if (msg.type === 'CLAIM_ACK') {
 							console.log('claim success');
 
-							socket.addEventListener('message', (evt) => {
-								const msg = JSON.parse(evt.data);
-
-								console.log(msg);
-							});
-
 							socketRef.current = socket;
 						}
 					},

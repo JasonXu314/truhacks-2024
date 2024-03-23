@@ -24,6 +24,14 @@ export class Stroke {
 		this.pts.push(pt);
 	}
 
+	public render(ctx: CanvasRenderingContext2D): void {
+		ctx.moveTo(...this.pts[0]);
+
+		this.pts.slice(1).forEach((pt) => ctx.lineTo(...pt));
+
+		ctx.stroke();
+	}
+
 	public toPlain(): { id: string; pts: [number, number][] } {
 		const { id, pts } = this;
 
