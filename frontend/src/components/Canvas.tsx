@@ -3,9 +3,10 @@ import { useEffect, useRef } from 'react';
 
 interface Props {
 	color: string;
+	eraserEquipped: boolean;
 }
 
-const Canvas: React.FC<Props> = ({ color }) => {
+const Canvas: React.FC<Props> = ({ color, eraserEquipped }) => {
 	const canvasRef = useRef<HTMLCanvasElement | null>(null);
 	const engineRef = useRef<Engine | null>(null);
 
@@ -23,6 +24,10 @@ const Canvas: React.FC<Props> = ({ color }) => {
 	useEffect(() => {
 		engineRef.current?.updateColor(color);
 	}, [color]);
+
+	useEffect(() => {
+		engineRef.current?.toggleEraser();
+	}, [eraserEquipped]);
 
 	return (
 		<canvas
