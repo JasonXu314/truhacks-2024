@@ -1,6 +1,7 @@
 import api from '@/services/axiosConfig';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useState } from 'react';
 import { FiArrowUpRight, FiStar } from 'react-icons/fi';
 import PhoneInput from 'react-phone-number-input';
@@ -23,8 +24,9 @@ const Form = () => {
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [error, setError] = useState('');
 
+	const router = useRouter();
+
 	const createAccount = () => {
-        console.log(process.env.NEXT_PUBLIC_BACKEND_URL)
 		if (password != confirmPassword) {
 			setError("Passwords don't match");
 			return;
@@ -36,7 +38,8 @@ const Form = () => {
 			password
 		})
 			.then((resp) => {
-				console.log(resp);
+				localStorage.setItem('token', resp.data.token);
+				router.push('/student');
 			})
 			.catch((err) => {
 				console.log(err);
