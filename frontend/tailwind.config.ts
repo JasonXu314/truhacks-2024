@@ -7,14 +7,14 @@ const config: Config = {
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
 				'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))'
+			},
+			colors: {
+				blue: '#4540E2',
+				darkText: '#36353A',
+				text: '#363539',
+				textSimple: '#52525D',
+				paleBlue: '#E0E0F4'
 			}
-		},
-		colors: {
-			blue: '#4540E2',
-			darkText: '#36353A',
-			text: '#363539',
-			textSimple: '#52525D',
-			paleBlue: '#E0E0F4',
 		}
 	},
 	plugins: []
