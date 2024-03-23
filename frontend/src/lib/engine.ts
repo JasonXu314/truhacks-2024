@@ -1,8 +1,5 @@
 import { Stroke } from './stroke';
 
-const PEN = typeof window === 'undefined' ? ({} as any) : new Image(18, 18);
-PEN.src = '/img/pen.png';
-
 export class Engine {
 	public readonly ctx: CanvasRenderingContext2D;
 
@@ -44,10 +41,6 @@ export class Engine {
 	private _tick(): void {
 		this._af = requestAnimationFrame(() => {
 			this._tick();
-
-			// if (this._cursorPos !== null) {
-			// 	this.ctx.drawImage(PEN, this._cursorPos[0], this._cursorPos[1] - 18, 18, 18);
-			// }
 		});
 	}
 }

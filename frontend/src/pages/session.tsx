@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import api from '@/services/axiosConfig';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BsCameraVideo, BsCameraVideoOff, BsMic, BsMicMute } from 'react-icons/bs';
 import Canvas from '@/components/Canvas';
 
@@ -9,9 +9,15 @@ const Session = () => {
 	const [name, setName] = useState('');
 	const [init, setInit] = useState(true);
 	const [open, setOpen] = useState(false);
-
 	const [micOn, setMicOn] = useState(true);
 	const [cameraOn, setCameraOn] = useState(true);
+
+    // const [stream, setStream] = useState<MediaStream>();
+	// const [callerSignal, setCallerSignal] = useState<string>('');
+	// const [callAccepted, setCallAccepted] = useState(false);
+
+    // const userVideo = useRef<any>(null);
+	// const partnerVideo = useRef<any>(null);
 
 	const router = useRouter();
 
@@ -78,15 +84,15 @@ const Session = () => {
 					{/* <div className='h-full w-full bg-white'></div> */}
                     <Canvas />
 				</div>
-				<div className='flex flex-col justify-between px-4 py-8 gap-4'>
-					<div>
+				<div className='flex flex-col justify-between px-4 py-8 gap-4 w-1/3'>
+					{/* <div>
 						<p>Eric Wong (Tutor)</p>
-						<img src='/img/stocks.png' height={350} width={350}></img>
+						{stream && <video className='w-full border-2 border-blue border-solid' playsInline muted ref={userVideo} autoPlay />}
 					</div>
 					<div>
 						<p>Aiturgan Talant (Student)</p>
-						<img src='/img/stocks.png' height={350} width={350}></img>
-					</div>
+						{callAccepted && <video className='w-full border-2 border-blue border-solid' playsInline ref={partnerVideo} autoPlay />}
+					</div> */}
 				</div>
 			</div>
 			<div className='h-28 w-3/4 bg-blue mx-auto rounded-lg flex gap-8 items-center justify-center'>
