@@ -16,7 +16,7 @@ const SignIn = () => {
 	const createAccount = () => {
 		api.post('/api/users/login', {
 			email,
-			password
+			password,
 		})
 			.then((resp) => {
 				localStorage.setItem('token', resp.data.token);
@@ -29,55 +29,55 @@ const SignIn = () => {
 
 	return (
 		<motion.div
-			initial='initial'
-			whileInView='animate'
+			initial="initial"
+			whileInView="animate"
 			transition={{
-				staggerChildren: 0.05
+				staggerChildren: 0.05,
 			}}
 			viewport={{ once: true }}
-			className='flex items-center justify-center pb-4 pt-20 md:py-20'
+			className="flex items-center justify-center pb-4 h-full pt-20  bg-blue "
 		>
-			<div className='mx-auto my-auto max-w-lg px-4 md:pr-0'>
-				<motion.h1 variants={primaryVariants} className='mb-2 text-center text-4xl font-semibold'>
-					Sign in to your account
+			<div className="bg-white border-2 shadow-lg  mx-auto my-auto max-w-lg  py-10  px-12 items-center flex flex-col rounded justify-center">
+				<motion.h1 variants={primaryVariants} className="mb-8 text-center text-darktext text-4xl font-semibold">
+					Excel with EducateAll
 				</motion.h1>
-				<motion.p variants={primaryVariants} className='mb-8 text-center'>
-					Unlock Your Potential: Ask, Learn, Excel with EducateAll!
+				<motion.p variants={primaryVariants} className="mb-3 text-xl text-center">
+					Sign in into your account
 				</motion.p>
-				{error && <p className='text-red-400 text-center font-bold'>{error}</p>}
+				{error && <p className="text-red-400 text-center font-bold">{error}</p>}
 				<form
 					onSubmit={(e) => {
 						e.preventDefault();
 						createAccount();
 					}}
-					className='w-full'
+					className="w-full"
 				>
-					<motion.div variants={primaryVariants} className='mb-2 w-full'>
-						<label htmlFor='email-input' className='mb-1 inline-block text-sm font-medium'>
-							Email<span className='text-red-600'>*</span>
+					<motion.div variants={primaryVariants} className="mb-2 w-full">
+						<label htmlFor="email-input" className="mb-1 inline-block text-sm font-medium">
+							Email<span className="text-red-600">*</span>
 						</label>
 						<input
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
-							id='email-input'
-							type='email'
-							placeholder='Enter your email'
-							className='w-full rounded border-[1px] border-slate-300 px-2.5 py-1.5 focus:outline-none'
+							id="email-input"
+							type="email"
+							placeholder="Enter your email"
+							className="w-full rounded border-[1px] border-slate-300 px-2.5 py-1.5 focus:outline-none"
 							required
 						/>
 					</motion.div>
 
-					<motion.div variants={primaryVariants} className='mb-2 w-full'>
-						<label htmlFor='password-input' className='mb-1 inline-block text-sm font-medium'>
-							Password<span className='text-red-600'>*</span>
+					<motion.div variants={primaryVariants} className="mb-2 w-full">
+						<label htmlFor="password-input" className="mb-1 inline-block text-sm font-medium">
+							Password<span className="text-red-600">*</span>
 						</label>
 						<input
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
-							id='password-input'
-							type='password'
-							placeholder='Enter your password'
-							className='w-full rounded border-[1px] border-slate-300 px-2.5 py-1.5 focus:outline-none'
+							id="password-input"
+							type="password"
+							placeholder="Enter your password"
+							className="w-full rounded border-[1px] border-slate-300 px-2.5 py-1.5 focus:outline-none"
 							required
 						/>
 					</motion.div>
@@ -85,16 +85,16 @@ const SignIn = () => {
 					<motion.button
 						variants={primaryVariants}
 						whileTap={{
-							scale: 0.985
+							scale: 0.985,
 						}}
-						type='submit'
-						className='mb-1.5 w-full rounded bg-indigo-600 px-4 py-2 text-center font-medium text-white transition-colors hover:bg-indigo-700'
+						type="submit"
+						className="mb-1.5 w-full rounded bg-indigo-600 px-4 py-2 text-center font-medium text-white transition-colors hover:bg-indigo-700"
 					>
 						Sign in
 					</motion.button>
-					<motion.p variants={primaryVariants} className='text-xs'>
+					<motion.p variants={primaryVariants} className="text-xs text-center">
 						Don&apos;t have an account?{' '}
-						<Link className='text-indigo-600 underline' href='/signup'>
+						<Link className="text-indigo-600 underline" href="/signup">
 							Sign up
 						</Link>
 					</motion.p>
@@ -107,12 +107,12 @@ const SignIn = () => {
 const primaryVariants = {
 	initial: {
 		y: 25,
-		opacity: 0
+		opacity: 0,
 	},
 	animate: {
 		y: 0,
-		opacity: 1
-	}
+		opacity: 1,
+	},
 };
 
 export default SignIn;
