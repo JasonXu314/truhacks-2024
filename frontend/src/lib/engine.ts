@@ -23,7 +23,7 @@ export class Engine {
 				this._strokes.push(newStroke);
 
 				const moveListener = (evt: MouseEvent) => {
-					newStroke.pts.push([evt.offsetX, evt.offsetY]);
+					newStroke.extend(this.ctx, [evt.offsetX, evt.offsetY]);
 				};
 
 				canvas.addEventListener('mousemove', moveListener);
@@ -35,15 +35,6 @@ export class Engine {
 				}
 			}
 		});
-
-		canvas.addEventListener('mouseover', () => {
-			const moveListener = (evt: MouseEvent) => {
-				this._cursorPos = [evt.offsetX, evt.offsetY];
-			};
-
-			canvas.addEventListener('mousemove', moveListener);
-			canvas.addEventListener('mouseout', () => canvas.removeEventListener('mousemove', moveListener));
-		});
 	}
 
 	public start(): void {
@@ -54,12 +45,9 @@ export class Engine {
 		this._af = requestAnimationFrame(() => {
 			this._tick();
 
-			this.ctx.clearRect(0, 0, 1200, 800);
-			this._strokes.forEach((stroke) => stroke.render(this.ctx));
-
-			if (this._cursorPos !== null) {
-				this.ctx.drawImage(PEN, this._cursorPos[0], this._cursorPos[1] - 18, 18, 18);
-			}
+			// if (this._cursorPos !== null) {
+			// 	this.ctx.drawImage(PEN, this._cursorPos[0], this._cursorPos[1] - 18, 18, 18);
+			// }
 		});
 	}
 }

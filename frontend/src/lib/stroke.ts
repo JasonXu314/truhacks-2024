@@ -1,12 +1,12 @@
 export class Stroke {
 	constructor(public pts: [number, number][]) {}
 
-	public render(ctx: CanvasRenderingContext2D): void {
-		ctx.moveTo(...this.pts[0]);
-
-		this.pts.slice(1).forEach((pt) => ctx.lineTo(...pt));
-
+	public extend(ctx: CanvasRenderingContext2D, pt: [number, number]): void {
+		ctx.moveTo(...this.pts.at(-1)!);
+		ctx.lineTo(...pt);
 		ctx.stroke();
+
+		this.pts.push(pt);
 	}
 }
 
