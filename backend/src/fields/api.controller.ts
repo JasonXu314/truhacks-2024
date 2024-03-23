@@ -1,6 +1,6 @@
 import { Body, Controller, Get, HttpStatus, Param, ParseIntPipe, Post, Redirect, Res } from '@nestjs/common';
 import { Field, Subject } from '@prisma/client';
-import { Response } from 'express';
+import { type Response } from 'express';
 import { CreateFieldDTO, CreateSubjectDTO } from './dtos';
 import { FieldsService } from './fields.service';
 import { FullField } from './models';

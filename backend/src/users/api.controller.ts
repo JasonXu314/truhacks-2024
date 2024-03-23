@@ -1,6 +1,6 @@
 import { BadRequestException, Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { LoginDTO, SignupDTO } from './dtos';
-import { PublicUser, SensitiveUser, toPublicUser, toSensitiveUser } from './models';
+import { SensitiveUser, toSensitiveUser } from './models';
 import { UsersService } from './users.service';
 
 @Controller({ path: '/api/users' })
@@ -8,10 +8,10 @@ export class UsersAPIController {
 	constructor(private readonly service: UsersService) {}
 
 	@Post('/signup')
-	public async signup(@Body() data: SignupDTO): Promise<PublicUser> {
+	public async signup(@Body() data: SignupDTO): Promise<SensitiveUser> {
 		const user = await this.service.create(data);
 
-		return toPublicUser(user);
+		return toSensitiveUser(user);
 	}
 
 	@Post('/login')
