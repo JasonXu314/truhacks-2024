@@ -47,7 +47,7 @@ const Tutor = () => {
 	}
 
 	return (
-		<div className='flex flex-col w-2/3 mx-auto h-full gap-10 justify-center'>
+		<div className='flex flex-col w-2/3 mx-auto h-full gap-10 pt-[5%]'>
 			<SpringModal isOpen={open} setIsOpen={setOpen} />
 			<p className='text-text text-4xl font-bold'>
 				Welcome, {name}, to your <span className='text-blue'>Tutor Hub!</span>
@@ -76,11 +76,9 @@ const Tutor = () => {
 								</TableCell>
 							</TableRow>
 							<TableRow>
-								<TableCell className='font-medium'>
-									How do I solve for x in 2x + 5 = 11?
-								</TableCell>
-								<TableCell>Aiturgan Talant</TableCell>
-								<TableCell>Algebra 1</TableCell>
+								<TableCell className='font-medium'>How do I solve for x in 2x + 5 = 11?</TableCell>
+								<TableCell>Eric Wong</TableCell>
+								<TableCell>Physics 1</TableCell>
 								<TableCell className='text-center'>
 									<Button onClick={() => acceptRequest()} className='bg-blue text-white hover:bg-[#3631C9] mx-auto'>
 										Accept

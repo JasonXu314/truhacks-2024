@@ -2,6 +2,7 @@ import SpringModal from '@/components/Modal';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { IField, ISubject } from '@/interfaces/interfaces';
 import api from '@/services/axiosConfig';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
@@ -10,11 +11,12 @@ import { GrCamera, GrGroup, GrVolume } from 'react-icons/gr';
 const Student = () => {
 	const [name, setName] = useState('');
 	const [init, setInit] = useState(true);
-	const [subject, setSubject] = useState('');
-	const [field, setField] = useState('');
-	const [subjectList, setSubjectList] = useState([]);
-	const [fieldList, setFieldList] = useState([]);
+	const [subject, setSubject] = useState(0);
+	const [field, setField] = useState(0);
+	const [subjectList, setSubjectList] = useState<ISubject[] | undefined>([]);
+	const [fieldList, setFieldList] = useState<IField[]>([]);
 	const [open, setOpen] = useState(false);
+    const [question, setQuestion] = useState('');
 
 	const router = useRouter();
 
@@ -30,6 +32,7 @@ const Student = () => {
 				api.get('/api/fields')
 					.then((resp2) => {
 						console.log(resp2);
+						setFieldList(resp2.data);
 						setInit(false);
 					})
 					.catch((err) => {
@@ -41,11 +44,15 @@ const Student = () => {
 			});
 
 		setInit(false); // comment out later
-	});
+	}, []);
 
 	const requestTutor = () => {
+		api.post('/api/topics/request', {
+            description: question,
+            fields: [field],
+            subjects: [subject]
+        });
 		setOpen(true);
-		// request tutor
 	};
 
 	if (init) {
@@ -53,7 +60,7 @@ const Student = () => {
 	}
 
 	return (
-		<div className='flex flex-col w-2/3 mx-auto h-full gap-10 justify-center'>
+		<div className='flex flex-col w-2/3 mx-auto h-full gap-10 justify-center '>
 			<SpringModal isOpen={open} setIsOpen={setOpen} />
 			<p className='text-text text-4xl font-bold'>
 				Welcome, {name}, to your <span className='text-blue'>Student Hub!</span>
@@ -64,14 +71,22 @@ const Student = () => {
 					<div className='flex gap-5'>
 						<div>
 							<p>Field</p>
-							<Select>
+							<Select
+								onValueChange={(e) => {
+									let id = Number(e);
+									setField(id);
+									setSubject(fieldList[id - 1].subjects[0].id);
+									setSubjectList(fieldList.find((el) => el.id === id)?.subjects);
+								}}
+								value={field.toString()}
+							>
 								<SelectTrigger className='w-[180px]'>
 									<SelectValue placeholder='None' />
 								</SelectTrigger>
 								<SelectContent>
 									{fieldList.map((field) => (
-										<SelectItem value={field} key={field}>
-											{field}
+										<SelectItem value={field.id.toString()} key={field.id}>
+											{field.name}
 										</SelectItem>
 									))}
 								</SelectContent>
@@ -79,14 +94,20 @@ const Student = () => {
 						</div>
 						<div>
 							<p>Subject</p>
-							<Select>
+							<Select
+								onValueChange={(e) => {
+									let id = Number(e);
+									setSubject(id);
+								}}
+								value={subject.toString()}
+							>
 								<SelectTrigger className='w-[180px]'>
 									<SelectValue placeholder='None' />
 								</SelectTrigger>
-								<SelectContent>
-									{subjectList.map((subject) => (
-										<SelectItem value={subject} key={subject}>
-											{subject}
+								<SelectContent defaultValue={'1'}>
+									{subjectList?.map((subject) => (
+										<SelectItem value={subject.id.toString()} key={subject.id}>
+											{subject.name}
 										</SelectItem>
 									))}
 								</SelectContent>
@@ -96,7 +117,7 @@ const Student = () => {
 
 					<div className='h-full flex flex-col'>
 						<p>Question</p>
-						<Textarea className='h-full max-h-full resize-none focus:outline-none' placeholder='How do I calculate velocity?' id='question' />
+						<Textarea className='h-full max-h-full resize-none focus:outline-none' placeholder='How do I calculate velocity?' id='question' value={question} onChange={(e) => setQuestion(e.target.value)}/>
 					</div>
 					<Button onClick={() => requestTutor()} className='bg-blue text-white w-36 h-[5em] hover:bg-[#3631C9] mx-auto'>
 						Request
