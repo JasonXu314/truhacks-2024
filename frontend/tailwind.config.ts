@@ -72,12 +72,13 @@ const config = {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out'
 			},
-            cursor: {
-                pen: 'url(/img/pen.png), default',
-            }
+			cursor: {
+				pen: 'url(/img/pen.png) 0 45, default'
+			}
 		}
 	},
 	plugins: [require('tailwindcss-animate')]
 } satisfies Config;
 
 export default config;
+

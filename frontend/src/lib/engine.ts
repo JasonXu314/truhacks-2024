@@ -6,12 +6,14 @@ export class Engine {
 	private _af: number | null;
 	private _strokes: Stroke[];
 	private _cursorPos: [number, number] | null;
+    private _color: string;
 
 	public constructor(public readonly canvas: HTMLCanvasElement) {
 		this.ctx = canvas.getContext('2d')!;
 		this._af = null;
 		this._strokes = [];
 		this._cursorPos = null;
+        this._color = 'black';
 
 		canvas.addEventListener('mousedown', (evt) => {
 			if (evt.target === canvas) {
@@ -20,7 +22,7 @@ export class Engine {
 				this._strokes.push(newStroke);
 
 				const moveListener = (evt: MouseEvent) => {
-					newStroke.extend(this.ctx, [evt.offsetX, evt.offsetY]);
+					newStroke.extend(this.ctx, [evt.offsetX, evt.offsetY], this._color);
 				};
 
 				canvas.addEventListener('mousemove', moveListener);
@@ -43,4 +45,8 @@ export class Engine {
 			this._tick();
 		});
 	}
+
+    public updateColor(color: string): void {
+        this._color = color;
+    }
 }
