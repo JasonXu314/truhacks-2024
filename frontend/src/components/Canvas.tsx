@@ -26,8 +26,7 @@ const Canvas: React.FC<Props> = ({}) => {
 			}}
 			width={800}
 			height={600}
-			style={{ cursor }}
-			className="bg-white w-full h-full"
+			className='bg-white w-full h-full cursor-pen'
 		/>
 	);
 };
