@@ -9,9 +9,9 @@ export default function Home() {
 	return (
 		<div>
 			<main className={`flex min-h-screen flex-col items-center w-full justify-between px-24 gap-10`}>
-				<div className="flex flex-row gap-1 align-baseline pl-3">
-					<div className="pt-28 flex flex-col min-h-96 gap-4 min-w-64 mb-12 justify-items-start ">
-						<h1 className="text-5xl font-bold">Ensuring inclusive</h1>
+				<div className="flex flex-row gap-1 align-baseline pl-3 pt-8">
+					<div className="pt-28 flex flex-col min-h-96 gap-5 min-w-64 mb-12 justify-items-start ">
+						<h1 className="text-5xl text-darkText font-bold">Ensuring inclusive</h1>
 						<h1 className="text-5xl text-blue font-bold">Free Quality Education</h1>
 						<p className="pt-3">
 							Our live interactive platform connects students worldwide with passionate tutors. No matter your location, time zone, or budget,
@@ -31,7 +31,7 @@ export default function Home() {
 				<div className="flex flex-row gap-6 align-baseline pl-3" id="about">
 					<img src="img/earth.png" alt="Girl holdign a globe" width="550" height="700"></img>
 					<div className="pt-28 flex flex-col min-h-96 gap-4 min-w-64 justify-itmes-start ">
-						<h1 className="text-5xl font-bold">Our mission is to</h1>
+						<h1 className="text-5xl font-bold text-darkText">Our mission is to</h1>
 						<h1 className="text-5xl text-blue font-bold">Bring Positive Change</h1>
 						<p className="pt-3">
 							We are driven by the belief that education is <span className="italic">a fundamental human right</span>, not a privilege. Inspired
