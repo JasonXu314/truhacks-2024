@@ -11,12 +11,12 @@ import { GrCamera, GrGroup, GrVolume } from 'react-icons/gr';
 const Student = () => {
 	const [name, setName] = useState('');
 	const [init, setInit] = useState(true);
-	const [subject, setSubject] = useState(0);
-	const [field, setField] = useState(0);
+	const [subject, setSubject] = useState(1);
+	const [field, setField] = useState(1);
 	const [subjectList, setSubjectList] = useState<ISubject[] | undefined>([]);
 	const [fieldList, setFieldList] = useState<IField[]>([]);
 	const [open, setOpen] = useState(false);
-    const [question, setQuestion] = useState('');
+	const [question, setQuestion] = useState('');
 
 	const router = useRouter();
 
@@ -31,8 +31,8 @@ const Student = () => {
 				setName(resp.data.name);
 				api.get('/api/fields')
 					.then((resp2) => {
-						console.log(resp2);
 						setFieldList(resp2.data);
+						setSubjectList(resp2.data[0].subjects);
 						setInit(false);
 					})
 					.catch((err) => {
@@ -44,15 +44,21 @@ const Student = () => {
 			});
 
 		setInit(false); // comment out later
-	}, []);
+	}, [router]);
 
 	const requestTutor = () => {
 		api.post('/api/topics/request', {
-            description: question,
-            fields: [field],
-            subjects: [subject]
-        });
-		setOpen(true);
+			description: question,
+			fields: [field],
+			subjects: [subject]
+		})
+			.then((resp) => {
+				console.log(resp);
+				setOpen(true);
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 
 	if (init) {
@@ -104,7 +110,7 @@ const Student = () => {
 								<SelectTrigger className='w-[180px]'>
 									<SelectValue placeholder='None' />
 								</SelectTrigger>
-								<SelectContent defaultValue={'1'}>
+								<SelectContent>
 									{subjectList?.map((subject) => (
 										<SelectItem value={subject.id.toString()} key={subject.id}>
 											{subject.name}
@@ -117,7 +123,13 @@ const Student = () => {
 
 					<div className='h-full flex flex-col'>
 						<p>Question</p>
-						<Textarea className='h-full max-h-full resize-none focus:outline-none' placeholder='How do I calculate velocity?' id='question' value={question} onChange={(e) => setQuestion(e.target.value)}/>
+						<Textarea
+							className='h-full max-h-full resize-none focus:outline-none'
+							placeholder='How do I calculate velocity?'
+							id='question'
+							value={question}
+							onChange={(e) => setQuestion(e.target.value)}
+						/>
 					</div>
 					<Button onClick={() => requestTutor()} className='bg-blue text-white w-36 h-[5em] hover:bg-[#3631C9] mx-auto'>
 						Request

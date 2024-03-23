@@ -3,6 +3,7 @@ import api from '@/services/axiosConfig';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { BsCameraVideo, BsCameraVideoOff, BsMic, BsMicMute } from 'react-icons/bs';
+import Canvas from '@/components/Canvas';
 
 const Session = () => {
 	const [name, setName] = useState('');
@@ -74,7 +75,8 @@ const Session = () => {
 			</Button>
 			<div className='flex border-[1px] border-blue rounded-lg bg-[#E1E1F6] h-full '>
 				<div className='h-full w-full p-4'>
-					<div className='h-full w-full bg-white'></div>
+					{/* <div className='h-full w-full bg-white'></div> */}
+                    <Canvas />
 				</div>
 				<div className='flex flex-col justify-between px-4 py-8 gap-4'>
 					<div>
