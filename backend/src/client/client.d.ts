@@ -1,16 +1,12 @@
 /// <reference types="svelte" />
 /// <reference types="vite/client" />
 
+type User = import('@prisma/client').User;
 type FullField = import('src/fields/models').FullField;
 
 type Writable<T> = import('svelte/store').Writable<T>;
 
-interface User {
-	id: number;
-	name: string;
-}
-
-type NicePrimitive = number | string | null | undefined | Date | NiceObject;
+type NicePrimitive = number | string | boolean | null | undefined | Date | NiceObject;
 type NiceObject = { [k: string]: NicePrimitive | NicePrimitive[] } | NicePrimitive[];
 
 interface BasePageProps<T extends NiceObject = any> {

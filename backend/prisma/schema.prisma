@@ -21,6 +21,8 @@ model User {
     phone         String  @unique
     password      String
     token         String  @unique
+
+    topicRequests TopicRequest[]
 }
 
 model Field {
@@ -44,9 +46,10 @@ model Subject {
 
 model TopicRequest {
     id          Int    @id @default(autoincrement())
-    title       String
     description String @db.VarChar(512)
+    userId      String
 
     fields   Field[]
     subjects Subject[]
+    author   User      @relation(fields: [userId], references: [id])
 }
