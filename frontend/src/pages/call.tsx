@@ -37,6 +37,7 @@ const Call = () => {
 		});
 
 		peer.on('stream', (stream) => {
+            console.log('STREAM ON STUDENT');
 			if (partnerVideo.current) {
 				partnerVideo.current.srcObject = stream;
 			}
@@ -61,7 +62,7 @@ const Call = () => {
 		});
 
 		peer.on('stream', (stream) => {
-			console.log('dasdasda');
+			console.log('STREAM ON TUTOR');
 			partnerVideo.current.srcObject = stream;
 		});
 

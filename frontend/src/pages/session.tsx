@@ -105,8 +105,8 @@ const Session = () => {
 			const msg = JSON.parse(evt.data);
 			if (msg.type === 'SIGNAL') {
 				console.log("SIGNALED FROM STUDENT TO TUTOR");
-				peer!.signal(JSON.parse(msg.signal.signal));
                 setCallAccepted(true);
+				peer!.signal(JSON.parse(msg.signal.signal));
 			}
 		});
 	};
