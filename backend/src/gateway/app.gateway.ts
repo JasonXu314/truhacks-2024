@@ -2,6 +2,7 @@ import { BadRequestException, ConsoleLogger, Injectable } from '@nestjs/common';
 import { ConnectedSocket, MessageBody, OnGatewayConnection, OnGatewayDisconnect, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
 import { TopicRequest, User } from '@prisma/client';
 import { randomBytes } from 'crypto';
+import { WebSocket } from 'ws';
 import { ClaimAcknowledgeDTO, ClaimCodeDTO, ClientErrorDTO, EavesdropDTO, NewStrokeDTO } from '../gateway.dtos';
 
 interface UserData extends Pick<User, 'id' | 'name'> {
