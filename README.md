@@ -58,19 +58,29 @@ https://www.figma.com/file/hAdIcWvibrVcMLhtwVwwoz/TruHacks?type=design&node-id=0
 
 Have built a prototype, developed friendly UI and made sure the design is consistent and easy to navigate.
 
-**We used Next.js to create a fullstack application.**
+**We used Next.js to create a fullstack application and we are running local server.**
 
 ## Frontend: 
-WebRTC API (open source application) to establish video, audio streaming. WebRTC its an open-source application that covers, on a high level, two different technologies: media capture devices and peer-to-peer connectivity. Learning how to live-stream video and audio was quite a challenge. We faced several struggles working with this: couldn’t connect to a peer, couldn’t see/hear the peer. 
+WebRTC API to establish video, audio streaming. WebRTC its an open-source application that covers, on a high level, two different technologies: media capture devices and peer-to-peer connectivity. Learning how to live-stream video and audio was quite a challenge. We faced several struggles working with this: couldn’t connect to a peer, couldn’t see/hear the peer. 
 <br/>
+
 For better interaction and streamlined learning, we incorporated a whiteboard using in-built Javascript API canvas. We were able to make a whiteboard with eraser and different colored pencil. One of the challenges we faced: making the whiteboard collaborative. We used web-sockets to ensure sable connection between the server and the client. It was really good decision, since they are perfect for real time updates.
-<br/>
+
+
 Tailwind CSS, Shadcn/Hoverdev Components
 for quick UI building
+
 ## Backend:
 
+MySQL to store the data for user profiles, requests, etc.
 
+Bcrypt library and pwd hashing for secure authentication.
 
+Prisma to interract with the database and perform migrations.
+
+Next.js and Express to build REST API.
+
+WebSocket API (WebSockets) to ensure a two-way interactive communication session between the user's browser and a server.
 
 
 ### Installation
@@ -81,31 +91,27 @@ This is an example of how to list things you need to use the software and how to
   npm install npm@latest -g
   ```
 
-## Accomplishments that we're proud of
-
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 ## Team
-
-Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
-
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Eric Wong - Frontend/Backend Devlopment 
+Jason Xu - Backend Devlopment 
+Aiturgan Talant - Frontend Development, UX/UI 
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 ## What's next for EducateAll
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+- Speech-to-Text recognition to make notes of the sessions
+- Advanced Recources library
+- Google Sign In
+- Profile Tab and have achivements, badges, to make the platform more engaging
+- AI Assistant
 
-_For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Acknowledgments
 
-* []()
+* [Illustrations Library](https://undraw.co/)
 * []()
 * []()
 
