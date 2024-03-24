@@ -277,14 +277,14 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 	}
 
 	@SubscribeMessage('DELETE_STROKE')
-	public async deleteStroke(@MessageBody() id: number, @ConnectedSocket() client: WebSocket): Promise<ClientErrorDTO | void> {
+	public async deleteStroke(@MessageBody() id: string, @ConnectedSocket() client: WebSocket): Promise<ClientErrorDTO | void> {
 		const data = this._resolve(client);
 
 		if (data === null) {
 			setImmediate(() => client.close(1008));
 			return { type: 'CLIENT_ERROR' };
 		} else {
-			const msg = JSON.stringify({ type: 'END_STROKE', id });
+			const msg = JSON.stringify({ type: 'DELETE_STROKE', id });
 
 			if (data.user === data.session.tutor) {
 				data.session.student?.socket.send(msg);
