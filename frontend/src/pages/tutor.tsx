@@ -32,7 +32,7 @@ const Tutor = () => {
 		})
 			.then((resp) => {
 				console.log(resp);
-				router.push({ pathname: `/session?otp=${resp.data.otp}`, query: { data: resp.data.signal } });
+				router.push({ pathname: '/session', query: { data: resp.data.signal, otp: resp.data.otp } });
 			})
 			.catch((err) => {
 				console.log(err);
@@ -44,40 +44,40 @@ const Tutor = () => {
 	}
 
 	return (
-		<div className='flex flex-col w-2/3 mx-auto h-full gap-10 pt-[5%]'>
+		<div className="flex flex-col w-2/3 mx-auto h-full gap-10 pt-[5%]">
 			<SpringModal isOpen={open} setIsOpen={setOpen} />
-			<p className='text-text text-4xl font-bold'>
-				Welcome, {name}, to your <span className='text-blue'>Tutor Hub!</span>
+			<p className="text-text text-4xl font-bold">
+				Welcome, {name}, to your <span className="text-blue">Tutor Hub!</span>
 			</p>
 			<div>
-				<p className='text-2xl mb-3'>Tutor requests</p>
-				<div className='flex flex-col border-[1px] border-blue rounded-lg bg-[#E1E1F6]'>
+				<p className="text-2xl mb-3">Tutor requests</p>
+				<div className="flex flex-col border-[1px] border-blue rounded-lg bg-[#E1E1F6]">
 					<Table>
 						<TableHeader>
 							<TableRow>
 								<TableHead>Question</TableHead>
 								<TableHead>Student</TableHead>
 								<TableHead>Subject</TableHead>
-								<TableHead className='text-center'>Action</TableHead>
+								<TableHead className="text-center">Action</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
 							<TableRow>
-								<TableCell className='font-medium'>How do I solve for x in 2x + 5 = 11?</TableCell>
+								<TableCell className="font-medium">How do I solve for x in 2x + 5 = 11?</TableCell>
 								<TableCell>Eric Wong</TableCell>
 								<TableCell>Physics 1</TableCell>
-								<TableCell className='text-center'>
-									<Button onClick={() => acceptRequest(1)} className='bg-blue text-white hover:bg-[#3631C9] mx-auto'>
+								<TableCell className="text-center">
+									<Button onClick={() => acceptRequest(1)} className="bg-blue text-white hover:bg-[#3631C9] mx-auto">
 										Accept
 									</Button>
 								</TableCell>
 							</TableRow>
 							<TableRow>
-								<TableCell className='font-medium'>How do I solve for x in 2x + 5 = 11?</TableCell>
+								<TableCell className="font-medium">How do I solve for x in 2x + 5 = 11?</TableCell>
 								<TableCell>Eric Wong</TableCell>
 								<TableCell>Physics 1</TableCell>
-								<TableCell className='text-center'>
-									<Button onClick={() => acceptRequest(53)} className='bg-blue text-white hover:bg-[#3631C9] mx-auto'>
+								<TableCell className="text-center">
+									<Button onClick={() => acceptRequest(53)} className="bg-blue text-white hover:bg-[#3631C9] mx-auto">
 										Accept
 									</Button>
 								</TableCell>
@@ -91,3 +91,4 @@ const Tutor = () => {
 };
 
 export default Tutor;
+
