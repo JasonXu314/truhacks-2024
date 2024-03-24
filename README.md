@@ -39,12 +39,12 @@ Our live and interactive platform empowers students to connect with tutors for p
 Recognizing the value of face-to-face interaction, we've integrated live video calls into every session. To further enhance collaboration and explanation, students and tutors can utilize a real-time whiteboard with multiple colored pens. Committed to equitable access to education, we offer unlimited session lengths and avoid hidden fees. We believe quality learning should be available to everyone, everywhere.
 
 Features:
-[x] - Homepage with additional recources
-[x] - Authentication. Sign up/Sign in pages.
-[x] - User can select the subject and type out their question. Ability to request a tutor.
-[x] - Ability to start a tutoring session. 
-[x] - Video/Audio Live Streaming
-[x] - Collaborative Whiteboard with colors and eraser
+- [x] - Homepage with additional recources
+- [x] - Authentication. Sign up/Sign in pages.
+- [x] - User can select the subject and type out their question. Ability to request a tutor.
+- [x] - Ability to start a tutoring session. 
+- [x] - Video/Audio Live Streaming
+- [x] - Collaborative Whiteboard with colors and eraser
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -53,8 +53,7 @@ Features:
 <!-- GETTING STARTED -->
 ## How we built it
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+
 
 ### Installation
 
