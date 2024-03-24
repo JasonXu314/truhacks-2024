@@ -63,21 +63,7 @@ const Session = () => {
 
 				socket.send(JSON.stringify({ event: 'CLAIM', data: { otp: router.query.otp } }));
                 if (tutor) {
-                    const tempPeer = new Peer({
-                        initiator: false,
-                        trickle: false,
-                        stream: stream,
-                    });
-                    setPeer(tempPeer)
-
-                    tempPeer.on('signal', (data) => {
-                        console.log(data);
-                        socketRef.current?.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
-                    });
-            
-                    tempPeer.on('stream', (stream) => {
-                        partnerVideo.current.srcObject = stream;
-                    });
+                    initializePeers();
                 } 
 
                 
@@ -112,7 +98,7 @@ const Session = () => {
 
 	const initializePeers = () => {
 		const tempPeer = new Peer({
-			initiator: true,
+			initiator: (tutor ? false : true),
 			trickle: false,
 			stream: stream
 		});
