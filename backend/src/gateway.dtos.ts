@@ -18,6 +18,9 @@ export class NewStrokeDTO {
 
 	@IsArray({ each: true })
 	pts: [number, number][] = fi();
+
+	@IsString()
+	color: string = fi();
 }
 
 export interface ClaimAcknowledgeDTO {

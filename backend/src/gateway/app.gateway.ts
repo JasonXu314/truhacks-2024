@@ -205,14 +205,14 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 	}
 
 	@SubscribeMessage('NEW_STROKE')
-	public async newStroke(@MessageBody() { id, pts }: NewStrokeDTO, @ConnectedSocket() client: WebSocket): Promise<ClientErrorDTO | void> {
+	public async newStroke(@MessageBody() { id, pts, color }: NewStrokeDTO, @ConnectedSocket() client: WebSocket): Promise<ClientErrorDTO | void> {
 		const data = this._resolve(client);
 
 		if (data === null) {
 			setImmediate(() => client.close(1008));
 			return { type: 'CLIENT_ERROR' };
 		} else {
-			const msg = JSON.stringify({ type: 'NEW_STROKE', id, pts });
+			const msg = JSON.stringify({ type: 'NEW_STROKE', id, pts, color });
 
 			if (data.user === data.session.tutor) {
 				data.session.student?.socket.send(msg);
