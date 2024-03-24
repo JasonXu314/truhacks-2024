@@ -4,7 +4,7 @@ import { animate, useInView } from 'framer-motion';
 export const CountUpStats = () => {
 	return (
 		<div className="mx-auto w-full py-10 md:py-10 px-full bg-paleBlue rounded-lg  ">
-			<h2 className="mb-4 text-center text-base text-indigo-900  text-xxl sm:text-lg md:mb-6">Wihtout community efforts, by 2030</h2>
+			<h2 className="mb-4 text-center text-base text-indigo-900  text-xxl sm:text-lg md:mb-6">Without community efforts, by 2030</h2>
 
 			<div className="flex flex-col items-center justify-center sm:flex-row">
 				<Stat num={84} suffix=" mil" subheading="Children and youth will be out of school" />
