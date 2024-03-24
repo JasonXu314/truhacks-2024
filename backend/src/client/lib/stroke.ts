@@ -1,7 +1,7 @@
 export class Stroke {
 	public readonly id: string;
 
-	constructor(public pts: [number, number][], id?: string) {
+	constructor(public pts: [number, number][], public readonly color: string, id?: string) {
 		if (id) {
 			this.id = id;
 		} else {
@@ -14,9 +14,9 @@ export class Stroke {
 		}
 	}
 
-	public extend(ctx: CanvasRenderingContext2D, pt: [number, number], color: string): void {
+	public extend(ctx: CanvasRenderingContext2D, pt: [number, number]): void {
 		ctx.beginPath();
-		ctx.strokeStyle = color;
+		ctx.strokeStyle = this.color;
 		ctx.moveTo(...this.pts.at(-1)!);
 		ctx.lineTo(...pt);
 		ctx.stroke();
@@ -25,6 +25,8 @@ export class Stroke {
 	}
 
 	public render(ctx: CanvasRenderingContext2D): void {
+		ctx.beginPath();
+		ctx.strokeStyle = this.color;
 		ctx.moveTo(...this.pts[0]);
 
 		this.pts.slice(1).forEach((pt) => ctx.lineTo(...pt));
@@ -32,10 +34,10 @@ export class Stroke {
 		ctx.stroke();
 	}
 
-	public toPlain(): { id: string; pts: [number, number][] } {
-		const { id, pts } = this;
+	public toPlain(): { id: string; pts: [number, number][]; color: string } {
+		const { id, pts, color } = this;
 
-		return { id, pts };
+		return { id, pts, color };
 	}
 }
 

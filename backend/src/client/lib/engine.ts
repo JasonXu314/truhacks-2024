@@ -7,6 +7,7 @@ export class Engine {
 	private _color: string;
 	private _eraser: boolean;
 	private _peerStroke: Stroke | null;
+	private _dirty: boolean;
 
 	public constructor(public readonly canvas: HTMLCanvasElement, public readonly socket: WebSocket) {
 		this.ctx = canvas.getContext('2d')!;
@@ -14,20 +15,27 @@ export class Engine {
 		this._color = 'black';
 		this._eraser = true;
 		this._peerStroke = null;
+		this._dirty = false;
 
 		socket.addEventListener('message', (evt) => {
 			const msg = JSON.parse(evt.data);
 
 			switch (msg.type) {
 				case 'NEW_STROKE':
-					this._peerStroke = new Stroke(msg.pts, msg.id);
+					this._peerStroke = new Stroke(msg.pts, msg.id, msg.color);
 					this._strokes.push(this._peerStroke);
 					break;
 				case 'EXTEND':
-					this._peerStroke?.extend(this.ctx, msg.pt, this._color);
+					this._peerStroke?.extend(this.ctx, msg.pt);
 					break;
 				case 'END_STROKE':
 					this._peerStroke = null;
+					break;
+				case 'DELETE_STROKE':
+					this._strokes.splice(
+						this._strokes.findIndex((s) => s.id === msg.id),
+						1
+					);
 					break;
 			}
 		});
@@ -48,6 +56,12 @@ export class Engine {
 	private _tick(): void {
 		requestAnimationFrame(() => {
 			this._tick();
+
+			if (this._dirty) {
+				this._dirty = false;
+				this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+				this._strokes.forEach((stroke) => stroke.render(this.ctx));
+			}
 		});
 	}
 }
