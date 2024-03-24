@@ -8,7 +8,8 @@ export const UserContext = createContext({
 	name: '',
 	tutor: false,
 	peer: new Peer({ wrtc: wrtc }),
-	setPeer: (e: Peer.Instance) => {}
+	setPeer: (e: Peer.Instance) => {},
+	update: () => {}
 });
 
 export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
@@ -17,7 +18,11 @@ export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const [peer, setPeer] = useState<Peer.Instance>(new Peer({ wrtc: wrtc }));
     
 	useEffect(() => {
-		const token = localStorage.getItem('token');
+		update();
+	}, []);
+
+    const update = () => {
+        const token = localStorage.getItem('token');
 		if (token) {
 			api.get(`/api/users/me?token=${token}`)
 				.then((resp) => {
@@ -29,7 +34,8 @@ export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
 					// localStorage.removeItem('token');
 				});
 		}
-	}, [localStorage.getItem('token')]);
+    }
 
-	return <UserContext.Provider value={{ name, tutor, peer, setPeer }}>{children}</UserContext.Provider>;
+
+	return <UserContext.Provider value={{ name, tutor, peer, setPeer, update }}>{children}</UserContext.Provider>;
 };

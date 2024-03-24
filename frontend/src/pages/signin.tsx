@@ -1,9 +1,9 @@
+import { UserContext } from '@/contexts/UserContext';
 import api from '@/services/axiosConfig';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useState } from 'react';
-import PhoneInput from 'react-phone-number-input';
+import { useContext, useState } from 'react';
 import 'react-phone-number-input/style.css';
 
 const SignIn = () => {
@@ -12,6 +12,7 @@ const SignIn = () => {
 	const [error, setError] = useState('');
 
 	const router = useRouter();
+    const {update} = useContext(UserContext);
 
 	const createAccount = () => {
 		api.post('/api/users/login', {
@@ -20,6 +21,7 @@ const SignIn = () => {
 		})
 			.then((resp) => {
 				localStorage.setItem('token', resp.data.token);
+                update();
 				router.push('/student');
 			})
 			.catch((err) => {
