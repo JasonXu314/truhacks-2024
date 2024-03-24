@@ -1,4 +1,4 @@
-import SpringModal from '@/components/Modal';
+import SpringModal from '@/components/StudentModal';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import api from '@/services/axiosConfig';

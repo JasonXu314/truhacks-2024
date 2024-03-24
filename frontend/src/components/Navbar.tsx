@@ -65,7 +65,7 @@ const Navbar = () => {
 						<Link className='text-blue border rounded border-blue py-1.5 px-3 shadow hover:-translate-y-px' href='/signin'>
 							Sign In
 						</Link>
-						<ComplexButton text='Getting Started' link=''></ComplexButton>
+						<ComplexButton text='Getting Started' link='/signup'></ComplexButton>
 					</>
 				)}
 			</div>
