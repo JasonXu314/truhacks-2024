@@ -29,7 +29,7 @@ const Session = () => {
 	const partnerVideo = useRef<any>(null);
 
 	const router = useRouter();
-    const {tutor, peer, setPeer} = useContext(UserContext);
+	const { tutor, peer, setPeer } = useContext(UserContext);
 
 	useEffect(() => {
 		const token = localStorage.getItem('token');
@@ -45,28 +45,27 @@ const Session = () => {
 			setInit(false);
 		});
 
-        const tempPeer = new Peer({
+		const tempPeer = new Peer({
 			initiator: tutor ? false : true, // student initiates
 			trickle: false,
 			stream: stream
 		});
 
-        setPeer(tempPeer);
+		setPeer(tempPeer);
 
-        // if initiator, generates offer
-        tempPeer.on('signal', (data) => {
+		// if initiator, generates offer
+		tempPeer.on('signal', (data) => {
 			console.log(data);
-            api.post('/api/topics/offer', { token, data: JSON.stringify(data)}).then((res) => {
-                const peerOffer = JSON.parse(res.data);
-            });
+			api.post('/api/topics/offer', { token, data: JSON.stringify(data) }).then((res) => {
+				const peerOffer = JSON.parse(res.data);
+			});
 		});
-
 
 		if (!router.query.otp) {
 			console.error('no OTP');
 		} else {
-			// const socket = new WebSocket(`${process.env.NEXT_PUBLIC_BACKEND_URL!.replace('http', 'ws')}/gateway`);
-			const socket = new WebSocket(`ws://localhost:5000/gateway`);
+			const socket = new WebSocket(`${process.env.NEXT_PUBLIC_BACKEND_URL!.replace('http', 'ws')}/gateway`);
+			// const socket = new WebSocket(`ws://localhost:5000/gateway`);
 
 			socket.addEventListener('open', () => {
 				console.log('socket open');
@@ -101,17 +100,11 @@ const Session = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-
-    peer.on('stream', (stream) => {
-        if (partnerVideo.current) {
-            partnerVideo.current.srcObject = stream;
-        }
-    });
-
-
-
-
-
+	peer.on('stream', (stream) => {
+		if (partnerVideo.current) {
+			partnerVideo.current.srcObject = stream;
+		}
+	});
 
 	const endSession = () => {};
 
