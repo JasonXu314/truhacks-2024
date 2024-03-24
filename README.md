@@ -27,7 +27,7 @@ Here's a blank template to get started: To avoid retyping too much info. Do a se
 
 
 
-### What it does
+## What it does
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -55,7 +55,7 @@ This is an example of how to list things you need to use the software and how to
 
 
 <!-- USAGE EXAMPLES -->
-## What's next for EducateAll
+### What's next for EducateAll
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
 _For more examples, please refer to the [Documentation](https://example.com)_
@@ -63,7 +63,7 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
-## Team
+### Team
 
 Your Name - [@twitter_handle](https://twitter.com/twitter_handle) - email@email_client.com
 
