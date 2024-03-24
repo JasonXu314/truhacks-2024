@@ -1,4 +1,4 @@
-import { Body, Controller, ForbiddenException, Post } from '@nestjs/common';
+import { Body, Controller, ForbiddenException, Get, Post } from '@nestjs/common';
 import { TopicRequest } from '@prisma/client';
 import { UsersService } from 'src/users/users.service';
 import { OfferP2PDTO, RequestTopicDTO, TutorJoinDTO } from './dtos';
@@ -7,6 +7,11 @@ import { TopicsService } from './topics.service';
 @Controller({ path: '/api/topics' })
 export class TopicsAPIController {
 	constructor(private readonly service: TopicsService, private readonly users: UsersService) {}
+
+	@Get()
+	public async getAllTopics(): Promise<(TopicRequest & { author: Pick<User, 'id' | 'name'> })[]> {
+		return this.service.getAll();
+	}
 
 	@Post('/request')
 	public async requestTopic(@Body() data: RequestTopicDTO): Promise<TopicRequest & { author: Pick<User, 'id' | 'name'>; otp: string }> {
