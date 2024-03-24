@@ -39,5 +39,9 @@ export class TopicsService {
 	public async makeOffer(user: User, data: string): Promise<string> {
 		return this.gateway.makeOffer(user.id, data);
 	}
+
+	public tutorJoin(user: User, topicId: number): string {
+		return this.gateway.createTutorOTP(topicId, user);
+	}
 }
 

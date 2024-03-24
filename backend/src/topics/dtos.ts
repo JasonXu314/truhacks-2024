@@ -31,3 +31,14 @@ export class OfferP2PDTO {
 	@ApiProperty({ maxLength: 32, minLength: 32 })
 	token: string = fi();
 }
+
+export class TutorJoinDTO {
+	@IsString()
+	id: number = fi();
+
+	@IsString()
+	@Length(32, 32)
+	@ApiProperty({ maxLength: 32, minLength: 32 })
+	token: string = fi();
+}
+

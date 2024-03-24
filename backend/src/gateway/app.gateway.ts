@@ -56,6 +56,36 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 		return otp;
 	}
 
+	public createTutorOTP(topicId: number, user: Pick<User, 'id' | 'name'>): string {
+		const otp = randomBytes(64).toString('hex');
+		const session = this.sessions.find((s) => s.topic.id === topicId);
+
+		if (!session) {
+			throw new BadRequestException('Bad topic');
+		}
+
+		const timeout = setTimeout(() => {
+			session.claims.delete(otp);
+		}, 2500);
+
+		session.claims.set(otp, (client: WebSocket) => {
+			clearTimeout(timeout);
+
+			if (this.sockTimeouts.has(client)) {
+				clearTimeout(this.sockTimeouts.get(client));
+			}
+
+			session.claims.delete(otp);
+
+			const userData: UserData = { ...user, socket: client };
+			session.tutor = userData;
+
+			return userData;
+		});
+
+		return otp;
+	}
+
 	// Returns promise for return offer
 	public async makeOffer(id: string, data: string): Promise<string> {
 		for (const session of this.sessions) {
