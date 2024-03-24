@@ -12,15 +12,16 @@ const Call = () => {
 	const [test, setTest] = useState('');
 
 	const [tempPeer, setTempPeer] = useState<Peer.Instance>();
-
+	const [init, setInit] = useState(true);
 	useEffect(() => {
 		navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
 			setStream(stream);
 			if (userVideo.current) {
 				userVideo.current.srcObject = stream;
 			}
+			setInit(false);
 		});
-	});
+	}, [init]);
 
 	function callPeer(id: any) {
 		const peer = new Peer({
@@ -74,7 +75,7 @@ const Call = () => {
 				{callAccepted && <video className='w-1/2 h-1/2 border-2 border-blue border-solid' playsInline ref={partnerVideo} autoPlay />}
 			</div>
 			<div className='flex w-full'>
-				<button onClick={() => callPeer('123')}>das</button>
+				<button onClick={() => callPeer('123')}>generate offer</button>
 			</div>
 			<input value={callerSignal} onChange={(e) => setCallerSignal(e.target.value)} className='text-black'></input>
 			<button onClick={() => acceptCall()}>accept call</button>
