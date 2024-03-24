@@ -70,15 +70,14 @@ const Session = () => {
 					'message',
 					(evt) => {
 						const msg = JSON.parse(evt.data);
-						console.log(msg);
 						if (msg.type === 'CLAIM_ACK') {
 							console.log('claim success');
 
 							socketRef.current = socket;
 						} else if (msg.type === 'SIGNAL') {
 							console.log(msg);
-							console.log(msg.data.signal);
-                            peer.signal(msg.data.signal);
+							console.log(msg.signal);
+                            peer.signal(JSON.parse(msg.signal));
 						} else if (msg.type === 'JOIN') {
 							console.log('OTHER JOINED');
 
