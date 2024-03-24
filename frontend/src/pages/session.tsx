@@ -71,7 +71,7 @@ const Session = () => {
                             answerCall(socket, JSON.parse(msg.signal.signal));
                         }
                         else {
-
+                            finalCall(JSON.parse(msg.signal.signal));
                         }
                     }
 				});
@@ -132,10 +132,12 @@ const Session = () => {
                 partnerVideo.current.srcObject = stream;
             // }
 		});
+        console.log('TUTOR SIGNALED DATA')
 		peer.signal(data);
 	};
 
     const finalCall = (data: string) => {
+        console.log('FINISHED')
         setCallAccepted(true);
         testPeer!.signal(data);
     }
