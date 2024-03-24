@@ -43,7 +43,9 @@ const Session = () => {
 			}
 			setInit(false);
 		});
+	}, [init]);
 
+	useEffect(() => {
 		if (tutor) {
 			acceptCall();
 		} else {
@@ -180,7 +182,13 @@ const Session = () => {
 			partnerVideo.current.srcObject = stream;
 		});
 
-		// peer.signal(JSON.parse(callerSignal));
+        const { signal } = router.query;
+        console.log(router.query);
+        console.log(signal)
+        if (typeof signal === 'string') {
+            peer.signal(JSON.parse(signal));
+        }
+
 	};
 
 	if (init) {
@@ -188,7 +196,7 @@ const Session = () => {
 	}
 
 	return (
-		<div className='flex flex-col w-3/4 mx-auto h-full min-h-screen gap-3 justify-center py-8'>
+		<div className='flex flex-col w-3/5 mx-auto h-full min-h-screen gap-3 justify-center py-8'>
 			{tutor === false && <StudentModal isOpen={open} setIsOpen={setOpen} />}
 			{tutor === true && <TutorModal isOpen={open} setIsOpen={setOpen} />}
 			<div className='flex items-center flex-row gap-2 absolute top-6 left-10'>
@@ -198,7 +206,7 @@ const Session = () => {
 			<p className='text-text text-4xl font-bold text-center'>
 				Welcome, {name}, to your <span className='text-blue'>Tutoring Session!</span>
 			</p>
-			<div className='flex border-[1px] border-blue rounded-lg bg-[#E1E1F6] h-full '>
+			<div className='flex border-[1px] border-blue rounded-lg bg-[#E1E1F6] h-screen z-[20]'>
 				<div className='h-full w-full p-4'>
 					{/* <div className='h-full w-full bg-white'></div> */}
 					<Canvas color={color} eraserEquipped={eraserEquipped} socketRef={socketRef} />

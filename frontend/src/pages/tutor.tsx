@@ -28,10 +28,11 @@ const Tutor = () => {
 	const acceptRequest = (id: number) => {
 		api.post('/api/topics/tutor-join', {
 			token: localStorage.getItem('token'),
-			id
+			id: id.toString()
 		})
 			.then((resp) => {
 				console.log(resp);
+				router.push({ pathname: `/session?otp=${resp.data.otp}`, query: { data: resp.data.signal } });
 			})
 			.catch((err) => {
 				console.log(err);
@@ -76,7 +77,7 @@ const Tutor = () => {
 								<TableCell>Eric Wong</TableCell>
 								<TableCell>Physics 1</TableCell>
 								<TableCell className='text-center'>
-									<Button onClick={() => acceptRequest(1)} className='bg-blue text-white hover:bg-[#3631C9] mx-auto'>
+									<Button onClick={() => acceptRequest(53)} className='bg-blue text-white hover:bg-[#3631C9] mx-auto'>
 										Accept
 									</Button>
 								</TableCell>
