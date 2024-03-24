@@ -164,6 +164,8 @@ const Session = () => {
 	};
 
 	const acceptCall = () => {
+        const token = localStorage.getItem('token');
+        
 		setCallAccepted(true);
 		const peer = new Peer({
 			initiator: false,
@@ -172,8 +174,9 @@ const Session = () => {
 		});
 		peer.on('signal', (data) => {
 			console.log(data);
-			api.post('/api/topics/tutor-join', {
-				data: JSON.stringify(data)
+			api.post('/api/topics/offer', {
+				data: JSON.stringify(data),
+                token
 			});
 		});
 
