@@ -96,8 +96,8 @@ const Session = () => {
 		setTestPeer(peer);
 		peer.on('signal', (data) => {
 			console.log('SENT INITIAL SIGNAL FROM STUDENT TO TUTOR');
-			// socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
-			setTest(test);
+			socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
+			// setTest(test);
 		});
 		peer.on('stream', (stream) => {
 			// if (partnerVideo.current) {
