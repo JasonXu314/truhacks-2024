@@ -300,6 +300,28 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 		}
 	}
 
+	@SubscribeMessage('SIGNAL')
+	public async signal(@MessageBody() signal: string, @ConnectedSocket() client: WebSocket): Promise<ClientErrorDTO | void> {
+		const data = this._resolve(client);
+
+		if (data === null) {
+			setImmediate(() => client.close(1008));
+			return { type: 'CLIENT_ERROR' };
+		} else {
+			const msg = JSON.stringify({ type: 'SIGNAL', signal });
+
+			if (data.user === data.session.tutor) {
+				data.session.student?.socket.send(msg);
+			} else if (data.user === data.session.student) {
+				data.session.tutor?.socket.send(msg);
+			} else {
+				this.logger.warn('not tutor or student');
+				setImmediate(() => client.close(1008));
+				return { type: 'CLIENT_ERROR' };
+			}
+		}
+	}
+
 	private _pruneSocket<T extends Record<string, any>>(obj: T): { [K in keyof T]: T[K] extends WebSocket ? never : T[K] } {
 		return Object.fromEntries(Object.entries(obj).filter(([, val]) => !(val instanceof WebSocket))) as any;
 	}
