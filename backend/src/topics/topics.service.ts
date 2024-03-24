@@ -40,7 +40,7 @@ export class TopicsService {
 		return this.gateway.makeOffer(user.id, data);
 	}
 
-	public tutorJoin(user: User, topicId: number): string {
+	public tutorJoin(user: User, topicId: number): { signal: string; otp: string } {
 		return this.gateway.createTutorOTP(topicId, user);
 	}
 }

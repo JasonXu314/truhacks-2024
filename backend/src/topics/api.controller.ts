@@ -25,7 +25,7 @@ export class TopicsAPIController {
 	}
 
 	@Post('/tutor-join')
-	public async tutorJoin(@Body() { id, token }: TutorJoinDTO): Promise<string> {
+	public async tutorJoin(@Body() { id, token }: TutorJoinDTO): Promise<{ signal: string; otp: string }> {
 		const user = await this.users.auth(token);
 
 		if (user === null) {
