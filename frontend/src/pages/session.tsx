@@ -65,19 +65,6 @@ const Session = () => {
 				socket.send(JSON.stringify({ event: 'CLAIM', data: { otp: router.query.otp } }));
 
 				let peer: Peer.Instance;
-				if (tutor) {
-					peer = new Peer({
-						initiator: false,
-						trickle: false,
-						stream: stream,
-					});
-				} else {
-					peer = new Peer({
-						initiator: true,
-						trickle: false,
-						stream: stream,
-					});
-				}
 
 				socket.addEventListener(
 					'message',
@@ -91,8 +78,24 @@ const Session = () => {
 						} else if (msg.type === 'SIGNAL') {
 							console.log(msg);
 							console.log(msg.data.signal);
+                            peer.signal(msg.data.signal);
 						} else if (msg.type === 'JOIN') {
 							console.log('OTHER JOINED');
+
+                            if (tutor) {
+                                peer = new Peer({
+                                    initiator: false,
+                                    trickle: false,
+                                    stream: stream,
+                                });
+                            } else {
+                                peer = new Peer({
+                                    initiator: true,
+                                    trickle: false,
+                                    stream: stream,
+                                });
+                            }
+
 							peer.on('signal', (data) => {
 								console.log(data);
 								socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
