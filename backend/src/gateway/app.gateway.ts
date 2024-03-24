@@ -173,7 +173,7 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 					}
 				} else if (user === session.tutor) {
 					if (session.student !== null) {
-						setImmediate(() => session.tutor!.socket.send(JSON.stringify({ type: 'JOIN', user: this._pruneSocket(user) })));
+						setImmediate(() => session.student!.socket.send(JSON.stringify({ type: 'JOIN', user: this._pruneSocket(user) })));
 					}
 				} else {
 					this.logger.warn('not tutor or student');
