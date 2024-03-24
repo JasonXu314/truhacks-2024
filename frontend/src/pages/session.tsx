@@ -64,7 +64,8 @@ const Session = () => {
 
 				socket.send(JSON.stringify({ event: 'CLAIM', data: { otp: router.query.otp } }));
 
-				let peer;
+                
+				let peer: Peer.Instance;
 				if (tutor) {
 					peer = new Peer({
 						initiator: false,
@@ -79,15 +80,6 @@ const Session = () => {
 					});
 				}
 
-				peer.on('signal', (data) => {
-					console.log(data);
-					socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
-				});
-
-				peer.on('stream', (stream) => {
-					partnerVideo.current.srcObject = stream;
-				});
-
 				socket.addEventListener(
 					'message',
 					(evt) => {
@@ -101,6 +93,17 @@ const Session = () => {
 							console.log(msg);
 							console.log(msg.data.signal);
 						}
+                        else if (msg.type === 'JOIN') {
+                            console.log('OTHER JOINED')
+                            peer.on('signal', (data) => {
+                                console.log(data);
+                                socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
+                            });
+            
+                            peer.on('stream', (stream) => {
+                                partnerVideo.current.srcObject = stream;
+                            });
+                        }
 					},
 					{ once: true }
 				);
