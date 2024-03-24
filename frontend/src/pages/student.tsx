@@ -28,6 +28,7 @@ const Student = () => {
 
 		api.get('/api/fields')
 			.then((resp) => {
+                console.log(resp.data)
 				setFieldList(resp.data);
 				setSubjectList(resp.data[0].subjects);
 				setInit(false);

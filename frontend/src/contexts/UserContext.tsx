@@ -18,10 +18,15 @@ export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	useEffect(() => {
 		const token = localStorage.getItem('token');
 		if (token) {
-			api.get(`/api/auth/me?token=${token}`).then((resp) => {
-				setName(resp.data.name);
-				setTutor(resp.data.verifiedTutor);
-			});
+			api.get(`/api/users/me?token=${token}`)
+				.then((resp) => {
+					setName(resp.data.name);
+					setTutor(resp.data.verifiedTutor);
+				})
+				.catch((err) => {
+					console.log(err);
+					// localStorage.removeItem('token');
+				});
 		}
 	}, []);
 

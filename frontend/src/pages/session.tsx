@@ -1,11 +1,13 @@
 import Canvas from '@/components/Canvas';
 import SpringModal from '@/components/Modal';
 import { Button } from '@/components/ui/button';
+import { UserContext } from '@/contexts/UserContext';
 import api from '@/services/axiosConfig';
 import { useRouter } from 'next/router';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { BsCameraVideo, BsCameraVideoOff, BsEraserFill, BsMic, BsMicMute } from 'react-icons/bs';
 import { LuScreenShare, LuScreenShareOff } from 'react-icons/lu';
+import Peer from 'simple-peer';
 
 const Session = () => {
 	const [name, setName] = useState('');
@@ -16,17 +18,18 @@ const Session = () => {
 	const [screenShareOn, setScreenShareOn] = useState(false);
 
 	const [stream, setStream] = useState<MediaStream>();
-	// const [callerSignal, setCallerSignal] = useState<string>('');
-	// const [callAccepted, setCallAccepted] = useState(false);
+	const [callerSignal, setCallerSignal] = useState<string>('');
+	const [callAccepted, setCallAccepted] = useState(false);
 
 	const [color, setColor] = useState('black');
 	const [eraserEquipped, setEraserEquipped] = useState(false);
 
 	const userVideo = useRef<any>(null);
 	const socketRef = useRef<WebSocket | null>(null);
-	// const partnerVideo = useRef<any>(null);
+	const partnerVideo = useRef<any>(null);
 
 	const router = useRouter();
+    const {tutor, peer, setPeer} = useContext(UserContext);
 
 	useEffect(() => {
 		const token = localStorage.getItem('token');
@@ -42,9 +45,22 @@ const Session = () => {
 			setInit(false);
 		});
 
-		api.post('/api/topics/offer', { token, data: 'put offer here' }).then((res) => {
-			const peerOffer = JSON.parse(res.data);
+        const tempPeer = new Peer({
+			initiator: tutor ? false : true, // student initiates
+			trickle: false,
+			stream: stream
 		});
+
+        setPeer(tempPeer);
+
+        // if initiator, generates offer
+        tempPeer.on('signal', (data) => {
+			console.log(data);
+            api.post('/api/topics/offer', { token, data: JSON.stringify(data)}).then((res) => {
+                const peerOffer = JSON.parse(res.data);
+            });
+		});
+
 
 		if (!router.query.otp) {
 			console.error('no OTP');
@@ -84,6 +100,18 @@ const Session = () => {
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
+
+
+    peer.on('stream', (stream) => {
+        if (partnerVideo.current) {
+            partnerVideo.current.srcObject = stream;
+        }
+    });
+
+
+
+
+
 
 	const endSession = () => {};
 
