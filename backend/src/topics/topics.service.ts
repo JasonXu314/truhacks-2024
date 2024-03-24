@@ -37,7 +37,13 @@ export class TopicsService {
 	}
 
 	public async getAll(): Promise<(TopicRequest & { author: Pick<User, 'id' | 'name'> })[]> {
-		return this.db.topicRequest.findMany({ include: { author: { select: { id: true, name: true } } } });
+		return this.db.topicRequest.findMany({
+			include: {
+				author: { select: { id: true, name: true } },
+				fields: { select: { id: true, name: true } },
+				subjects: { select: { id: true, name: true } }
+			}
+		});
 	}
 
 	public async makeOffer(user: User, data: string): Promise<string> {
