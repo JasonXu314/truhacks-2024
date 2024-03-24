@@ -33,6 +33,8 @@ const Session = () => {
 	const router = useRouter();
 	const { tutor } = useContext(UserContext);
 
+    const [test,setTest] = useState('');
+
 	useEffect(() => {
 		if (!localStorage.getItem('token')) {
 			router.push('/signin');
@@ -98,6 +100,7 @@ const Session = () => {
 		peer.on('signal', (data) => {
             console.log("SENT INITIAL SIGNAL FROM STUDENT TO TUTOR")
 			socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
+            setTest(test);
 		});
 		peer.on('stream', (stream) => {
 			// if (partnerVideo.current) {
@@ -106,6 +109,11 @@ const Session = () => {
             // }
 		});
 
+        peer.on('error', err => console.log(err))
+
+        peer.on('connect', () => {
+            console.log('CONNECTED')
+        })
 		// socket.addEventListener('message', (evt) => {
 		// 	const msg = JSON.parse(evt.data);
 		// 	if (msg.type === 'SIGNAL') {
@@ -132,6 +140,13 @@ const Session = () => {
                 partnerVideo.current.srcObject = stream;
             // }
 		});
+
+        peer.on('error', err => console.log(err))
+
+        peer.on('connect', () => {
+            console.log('CONNECTED')
+        })
+
         console.log('TUTOR SIGNALED DATA')
 		peer.signal(data);
 	};
@@ -288,6 +303,7 @@ const Session = () => {
 					<img src='img/logo.png' alt='Logo EducateAll' width='36' height='36'></img>
 					<p className='font-bold text-xl text-blue'>EducateAll</p>
 				</div>
+                <textarea value={test} onChange={(e) => setTest(e.target.value)} className='text-black'></textarea>
 				<p className='text-text text-4xl font-bold text-center'>
 					Welcome, {name}, to your <span className='text-blue'>Tutoring Session!</span>
 				</p>
