@@ -11,7 +11,6 @@
     Live interactive platform that connects students worldwide with passionate tutors. No matter your location, time zone, or budget, you can now access expert guidance and conquer any academic challenge. 
     <br />
     <br />
-    <a href="https://github.com/github_username/repo_name"> 📘 View Demo</a>
     
   </p>
 </div>
