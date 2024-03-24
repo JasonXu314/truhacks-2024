@@ -56,9 +56,6 @@ const Session = () => {
 				console.log('socket open');
 
 				socket.send(JSON.stringify({ event: 'CLAIM', data: { otp: router.query.otp } }));
-				if (tutor) {
-					answerCall(socket);
-				}
 
 				socket.addEventListener('message', (evt) => {
 					const msg = JSON.parse(evt.data);
