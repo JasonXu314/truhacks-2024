@@ -7,15 +7,12 @@ var wrtc = require('wrtc');
 export const UserContext = createContext({
 	name: '',
 	tutor: false,
-	peer: new Peer({ wrtc: wrtc }),
-	setPeer: (e: Peer.Instance) => {},
 	update: () => {}
 });
 
 export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const [name, setName] = useState('');
 	const [tutor, setTutor] = useState(false);
-	const [peer, setPeer] = useState<Peer.Instance>(new Peer({ wrtc: wrtc }));
     
 	useEffect(() => {
 		update();
@@ -37,5 +34,5 @@ export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }
 
 
-	return <UserContext.Provider value={{ name, tutor, peer, setPeer, update }}>{children}</UserContext.Provider>;
+	return <UserContext.Provider value={{ name, tutor, update }}>{children}</UserContext.Provider>;
 };
