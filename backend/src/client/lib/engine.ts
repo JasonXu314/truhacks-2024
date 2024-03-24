@@ -36,6 +36,7 @@ export class Engine {
 						this._strokes.findIndex((s) => s.id === msg.id),
 						1
 					);
+					this._dirty = true;
 					break;
 			}
 		});
