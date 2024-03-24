@@ -17,4 +17,4 @@
 	});
 </script>
 
-<canvas bind:this={canvas} height={800} width={1200} style="cursor: none;" />
+<canvas bind:this={canvas} height={800} width={1200} style="cursor: none; background: white;" />
