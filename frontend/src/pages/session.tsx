@@ -59,6 +59,30 @@ const Session = () => {
 		} else {
 			const socket = new WebSocket(`${process.env.NEXT_PUBLIC_BACKEND_URL!.replace('http', 'ws')}/gateway`);
 
+			socket.addEventListener('open', () => {
+				console.log('socket open');
+
+				socket.send(JSON.stringify({ event: 'CLAIM', data: { otp: router.query.otp } }));
+
+				socket.addEventListener(
+					'message',
+					(evt) => {
+						const msg = JSON.parse(evt.data);
+
+						if (msg.type === 'CLAIM_ACK') {
+							console.log('claim success');
+
+							socketRef.current = socket;
+						}
+                        else if (msg.type === 'SIGNAL') {
+                            console.log(msg);
+                            console.log(msg.data.signal)
+                        }
+					},
+					{ once: true }
+				);
+			});
+
             let peer;
             if (tutor) {
                 peer = new Peer({
@@ -83,31 +107,6 @@ const Session = () => {
             peer.on('stream', (stream) => {
                 partnerVideo.current.srcObject = stream;
             });
-
-
-			socket.addEventListener('open', () => {
-				console.log('socket open');
-
-				socket.send(JSON.stringify({ event: 'CLAIM', data: { otp: router.query.otp } }));
-
-				socket.addEventListener(
-					'message',
-					(evt) => {
-						const msg = JSON.parse(evt.data);
-
-						if (msg.type === 'CLAIM_ACK') {
-							console.log('claim success');
-
-							socketRef.current = socket;
-						}
-                        else if (msg.type === 'SIGNAL') {
-                            console.log(msg);
-                            console.log(msg.data.signal)
-                        }
-					},
-					{ once: true }
-				);
-			});
 
 			socket.addEventListener('error', (evt) => {
 				console.log('socket error', evt);
