@@ -23,9 +23,9 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Inspiration
-"I'm a first gen immigrant. I was only able to get quality higher education and move to USA because my mom always told me that education will open my doors. I am fortunate to have supporting family, but what about all the other kids?", that what one of our team members have said when we starte ddiscussing UN Goals. Furtermore, we came to conlusion that education should be a human right, not a privelege. Since we worked as tutors, we were able to come up with a good solution that will be geared towards making education accessible . 
+Driven by a team member's powerful story as a first-generation immigrant, who achieved success through education, we're passionate about making learning accessible to all. Their journey underscores our belief that education is a fundamental human right, not a privilege.
 
-Our experience as tutors highlighted the limitations of existing tutoring platforms. College software is often clunky and uninviting, while popular video conferencing tools like Zoom can become expensive for extended sessions. These hurdles prevent students from receiving the ongoing support they need.
+Furthermore, our experience as tutors highlighted the limitations of existing tutoring platforms. College software is often clunky and uninviting, while popular video conferencing tools like Zoom can become expensive for extended sessions. These hurdles prevent students from receiving the ongoing support they need.
 
 That's why we built a free, full-stack web application that removes these barriers. Our streamlined design keeps students engaged, while built-in live, one-on-one video calls with tutors allow for in-depth explanations.  To maximize interactivity and collaboration, we've also incorporated a virtual whiteboard with various colored pens.
 
@@ -34,6 +34,17 @@ That's why we built a free, full-stack web application that removes these barrie
 
 
 ## What it does
+Our live and interactive platform empowers students to connect with tutors for personalized learning. Through our intuitive web application, students can easily create accounts and access their dedicated "Student Hub." Here, they can write their questions, choose a subject, and submit them directly to qualified tutors. Tutors, using their own dashboards, can review student requests and choose to accept.
+
+Recognizing the value of face-to-face interaction, we've integrated live video calls into every session. To further enhance collaboration and explanation, students and tutors can utilize a real-time whiteboard with multiple colored pens. Committed to equitable access to education, we offer unlimited session lengths and avoid hidden fees. We believe quality learning should be available to everyone, everywhere.
+
+Features:
+[x] - Homepage with additional recources
+[x] - Authentication. Sign up/Sign in pages.
+[x] - User can select the subject and type out their question. Ability to request a tutor.
+[x] - Ability to start a tutoring session. 
+[x] - Video/Audio Live Streaming
+[x] - Collaborative Whiteboard with colors and eraser
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
