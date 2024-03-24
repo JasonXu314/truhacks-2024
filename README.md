@@ -23,7 +23,11 @@
 
 <!-- ABOUT THE PROJECT -->
 ## Inspiration
+"I'm a first gen immigrant. I was only able to get quality higher education and move to USA because my mom always told me that education will open my doors. I am fortunate to have supporting family, but what about all the other kids?", that what one of our team members have said when we starte ddiscussing UN Goals. Furtermore, we came to conlusion that education should be a human right, not a privelege. Since we worked as tutors, we were able to come up with a good solution that will be geared towards making education accessible . 
 
+Our experience as tutors highlighted the limitations of existing tutoring platforms. College software is often clunky and uninviting, while popular video conferencing tools like Zoom can become expensive for extended sessions. These hurdles prevent students from receiving the ongoing support they need.
+
+That's why we built a free, full-stack web application that removes these barriers. Our streamlined design keeps students engaged, while built-in live, one-on-one video calls with tutors allow for in-depth explanations.  To maximize interactivity and collaboration, we've also incorporated a virtual whiteboard with various colored pens.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
