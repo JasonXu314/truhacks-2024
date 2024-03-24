@@ -253,14 +253,38 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 	}
 
 	@SubscribeMessage('END_STROKE')
-	public async endStroke(@MessageBody() pt: [number, number], @ConnectedSocket() client: WebSocket): Promise<ClientErrorDTO | void> {
+	public async endStroke(@ConnectedSocket() client: WebSocket): Promise<ClientErrorDTO | void> {
 		const data = this._resolve(client);
 
 		if (data === null) {
 			setImmediate(() => client.close(1008));
 			return { type: 'CLIENT_ERROR' };
 		} else {
-			const msg = JSON.stringify({ type: 'END_STROKE', pt });
+			const msg = JSON.stringify({ type: 'END_STROKE' });
+
+			if (data.user === data.session.tutor) {
+				data.session.student?.socket.send(msg);
+				this.eavesdroppers[data.session.topic.id]?.forEach((eve) => eve.send(msg));
+			} else if (data.user === data.session.student) {
+				data.session.tutor?.socket.send(msg);
+				this.eavesdroppers[data.session.topic.id]?.forEach((eve) => eve.send(msg));
+			} else {
+				this.logger.warn('not tutor or student');
+				setImmediate(() => client.close(1008));
+				return { type: 'CLIENT_ERROR' };
+			}
+		}
+	}
+
+	@SubscribeMessage('DELETE_STROKE')
+	public async deleteStroke(@MessageBody() id: number, @ConnectedSocket() client: WebSocket): Promise<ClientErrorDTO | void> {
+		const data = this._resolve(client);
+
+		if (data === null) {
+			setImmediate(() => client.close(1008));
+			return { type: 'CLIENT_ERROR' };
+		} else {
+			const msg = JSON.stringify({ type: 'END_STROKE', id });
 
 			if (data.user === data.session.tutor) {
 				data.session.student?.socket.send(msg);
