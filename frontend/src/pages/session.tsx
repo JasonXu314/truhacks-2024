@@ -20,7 +20,8 @@ const Session = () => {
 	const [cameraOn, setCameraOn] = useState(true);
 	const [screenShareOn, setScreenShareOn] = useState(false);
 	const [testPeer, setTestPeer] = useState<Peer.Instance>();
-	const [stream, setStream] = useState<MediaStream>();
+	// const [stream, setStream] = useState<MediaStream>();
+	const streamRef = useRef<MediaStream | null>();
 	const [callAccepted, setCallAccepted] = useState(false);
 
 	const [color, setColor] = useState('black');
@@ -42,7 +43,7 @@ const Session = () => {
 		}
 
 		navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-			setStream(stream);
+			streamRef.current = stream;
 			if (userVideo.current) {
 				userVideo.current.srcObject = stream;
 			}
@@ -91,7 +92,7 @@ const Session = () => {
 		const peer = new Peer({
 			initiator: true,
 			trickle: false,
-			stream: stream,
+			stream: streamRef.current!
 		});
 		setTestPeer(peer);
 		peer.on('signal', (data) => {
@@ -114,8 +115,8 @@ const Session = () => {
 		socket.addEventListener('message', (evt) => {
 			const msg = JSON.parse(evt.data);
 			if (msg.type === 'SIGNAL') {
-				console.log("SIGNALED FROM STUDENT TO TUTOR");
-		        setCallAccepted(true);
+				console.log('SIGNALED FROM STUDENT TO TUTOR');
+				setCallAccepted(true);
 				peer!.signal(JSON.parse(msg.signal.signal));
 			}
 		});
@@ -126,7 +127,7 @@ const Session = () => {
 		const peer = new Peer({
 			initiator: false,
 			trickle: false,
-			stream: stream,
+			stream: streamRef.current!
 		});
 		peer.on('signal', (data) => {
 			socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
@@ -177,21 +178,21 @@ const Session = () => {
 	};
 
 	const toggleCamera = () => {
-		if (cameraOn && stream) {
+		if (cameraOn && streamRef.current) {
 			setCameraOn(false);
-			stream.getVideoTracks()[0].enabled = false;
-		} else if (stream) {
+			streamRef.current.getVideoTracks()[0].enabled = false;
+		} else if (streamRef.current) {
 			setCameraOn(true);
-			stream.getVideoTracks()[0].enabled = true;
+			streamRef.current.getVideoTracks()[0].enabled = true;
 		}
 	};
 
 	const toggleMic = () => {
-		if (micOn && stream) {
-			stream.getAudioTracks()[0].enabled = false;
+		if (micOn && streamRef.current) {
+			streamRef.current.getAudioTracks()[0].enabled = false;
 			setMicOn(false);
-		} else if (stream) {
-			stream.getAudioTracks()[0].enabled = true;
+		} else if (streamRef.current) {
+			streamRef.current.getAudioTracks()[0].enabled = true;
 			setMicOn(true);
 		}
 	};
@@ -204,14 +205,14 @@ const Session = () => {
 	const shareScreen = () => {
 		if (screenShareOn) {
 			navigator.mediaDevices.getUserMedia({ video: true, audio: true }).then((stream) => {
-				setStream(stream);
+				streamRef.current = stream;
 				if (userVideo.current) {
 					userVideo.current.srcObject = stream;
 				}
 			});
 		} else {
 			navigator.mediaDevices.getDisplayMedia({}).then((stream) => {
-				setStream(stream);
+				streamRef.current = stream;
 				if (userVideo.current) {
 					userVideo.current.srcObject = stream;
 				}
@@ -227,7 +228,7 @@ const Session = () => {
 		const peer = new Peer({
 			initiator: true,
 			trickle: false,
-			stream: stream,
+			stream: streamRef.current!
 		});
 
 		peer.on('signal', (data) => {
@@ -261,13 +262,13 @@ const Session = () => {
 		const peer = new Peer({
 			initiator: false,
 			trickle: false,
-			stream: stream,
+			stream: streamRef.current!
 		});
 		peer.on('signal', (data) => {
 			console.log(data);
 			api.post('/api/topics/offer', {
 				data: JSON.stringify(data),
-				token,
+				token
 			}).then(() => {
 				setCallAccepted(true);
 				setOpen(false);
@@ -312,11 +313,30 @@ const Session = () => {
 					<div className="flex flex-col justify-between px-4 py-8 gap-4 w-1/3">
 						<div>
 							<p>Eric Wong (Tutor)</p>
-							{stream && <video className="w-full border-2 border-blue border-solid" muted playsInline ref={userVideo} autoPlay />}
+							{streamRef.current && (
+								<video
+									className="w-full border-2 border-blue border-solid"
+									muted
+									playsInline
+									ref={(elem) => {
+										userVideo.current = elem;
+									}}
+									autoPlay
+								/>
+							)}
 						</div>
 						<div>
 							<p>Aiturgan Talant (Student)</p>
-							{callAccepted && <video className="w-full border-2 border-blue border-solid" playsInline ref={partnerVideo} autoPlay />}
+							{callAccepted && (
+								<video
+									className="w-full border-2 border-blue border-solid"
+									playsInline
+									ref={(elem) => {
+										partnerVideo.current = elem;
+									}}
+									autoPlay
+								/>
+							)}
 						</div>
 					</div>
 				</div>
@@ -325,50 +345,43 @@ const Session = () => {
 						<div className={`${color === 'black' && !eraserEquipped && 'border-b-[2.5px]'} p-2 cursor-pointer`}>
 							<div
 								className="h-11 w-11 bg-black rounded-lg cursor-pointer selected:border-[1px] border-white"
-								onClick={() => changeColor('black')}
-							></div>
+								onClick={() => changeColor('black')}></div>
 						</div>
 
 						<div className={`${color === '#ef4444' && !eraserEquipped && 'border-b-[2.5px]'} p-2 cursor-pointer`}>
 							<div
 								className="h-11 w-11 bg-red-500 rounded-lg cursor-pointer selected:border-[1px] border-white"
-								onClick={() => changeColor('#ef4444')}
-							></div>
+								onClick={() => changeColor('#ef4444')}></div>
 						</div>
 
 						<div className={`${color === '#38bdf8' && !eraserEquipped && 'border-b-[2.5px]'} p-2 cursor-pointer`}>
 							<div
 								className="h-11 w-11 bg-sky-400 rounded-lg cursor-pointer selected:border-[1px] border-white"
-								onClick={() => changeColor('#38bdf8')}
-							></div>
+								onClick={() => changeColor('#38bdf8')}></div>
 						</div>
 
 						<div className={`${color === '#FF69B4' && !eraserEquipped && 'border-b-[2.5px]'} p-2 cursor-pointer`}>
 							<div
 								className="h-11 w-11 bg-[#FF69B4] rounded-lg cursor-pointer selected:border-[1px] border-white"
-								onClick={() => changeColor('#FF69B4')}
-							></div>
+								onClick={() => changeColor('#FF69B4')}></div>
 						</div>
 
 						<div className={`${color === '#18A804' && !eraserEquipped && 'border-b-[2.5px]'} p-2 cursor-pointer`}>
 							<div
 								className="h-11 w-11 bg-[#18A804] rounded-lg cursor-pointer selected:border-[1px] border-white"
-								onClick={() => changeColor('#18A804')}
-							></div>
+								onClick={() => changeColor('#18A804')}></div>
 						</div>
 
 						<div className={`${color === '#ff9a36' && !eraserEquipped && 'border-b-[2.5px]'} p-2 cursor-pointer`}>
 							<div
 								className="h-11 w-11 bg-[#ff9a36] rounded-lg cursor-pointer selected:border-[1px] border-white"
-								onClick={() => changeColor('#ff9a36')}
-							></div>
+								onClick={() => changeColor('#ff9a36')}></div>
 						</div>
 
 						<div className={`${color === '#f8ff00' && !eraserEquipped && 'border-b-[2.5px]'} p-2 cursor-pointer`}>
 							<div
 								className="h-11 w-11 bg-[#f8ff00] rounded-lg cursor-pointer selected:border-[1px] border-white"
-								onClick={() => changeColor('#f8ff00')}
-							></div>
+								onClick={() => changeColor('#f8ff00')}></div>
 						</div>
 
 						<div className={`${eraserEquipped && 'border-b-[2.5px]'} p-2 cursor-pointer`} onClick={() => setEraserEquipped(true)}>
@@ -410,3 +423,4 @@ const Session = () => {
 };
 
 export default Session;
+
