@@ -112,7 +112,6 @@ Aiturgan Talant - Frontend Development, UX/UI - [LinkedIn](https://www.linkedin.
 
 * [Illustrations Library](https://undraw.co/)
 * [Web RTC Docs](https://webrtc.org/getting-started/overview)
-* []()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
