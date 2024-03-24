@@ -5,12 +5,28 @@ import { UserContext } from '@/contexts/UserContext';
 import api from '@/services/axiosConfig';
 import { useRouter } from 'next/router';
 import { useContext, useEffect, useState } from 'react';
+
+interface IField {
+	id: number;
+	name: string;
+}
+
+interface IAuthor {
+	id: string;
+	name: string;
+}
+
+interface IRequest {
+	id: number;
+	userId: string;
+	description: string;
+	author: IAuthor;
+	fields: IField[];
+}
+
 const Tutor = () => {
 	const [init, setInit] = useState(true);
-	const [subject, setSubject] = useState('');
-	const [field, setField] = useState('');
-	const [subjectList, setSubjectList] = useState([]);
-	const [fieldList, setFieldList] = useState([]);
+	const [requestList, setRequestList] = useState<IRequest[]>([]);
 	const [open, setOpen] = useState(false);
 
 	const router = useRouter();
@@ -22,17 +38,21 @@ const Tutor = () => {
 		if (!token) {
 			router.push('/signin');
 		}
+		api.get('/api/topics').then((resp) => {
+			console.log(resp.data);
+			setRequestList(resp.data);
+		});
 		setInit(false);
 	}, [router]);
 
-	const acceptRequest = (id: number) => {
+	const acceptRequest = (id: number, author: string) => {
 		api.post('/api/topics/tutor-join', {
 			token: localStorage.getItem('token'),
 			id: id.toString()
 		})
 			.then((resp) => {
 				console.log(resp);
-				router.push({ pathname: '/session', query: { data: resp.data.signal, otp: resp.data.otp } });
+				router.push({ pathname: '/session', query: { data: resp.data.signal, otp: resp.data.otp, author: author } });
 			})
 			.catch((err) => {
 				console.log(err);
@@ -62,26 +82,18 @@ const Tutor = () => {
 							</TableRow>
 						</TableHeader>
 						<TableBody>
-							<TableRow>
-								<TableCell className='font-medium'>How do I solve for x in 2x + 5 = 11?</TableCell>
-								<TableCell>Eric Wong</TableCell>
-								<TableCell>Physics 1</TableCell>
-								<TableCell className='text-center'>
-									<Button onClick={() => acceptRequest(1)} className='bg-blue text-white hover:bg-[#3631C9] mx-auto'>
-										Accept
-									</Button>
-								</TableCell>
-							</TableRow>
-							<TableRow>
-								<TableCell className='font-medium'>How do I solve for x in 2x + 5 = 11?</TableCell>
-								<TableCell>Eric Wong</TableCell>
-								<TableCell>Physics 1</TableCell>
-								<TableCell className='text-center'>
-									<Button onClick={() => acceptRequest(139)} className='bg-blue text-white hover:bg-[#3631C9] mx-auto'>
-										Accept
-									</Button>
-								</TableCell>
-							</TableRow>
+							{requestList.map((request) => (
+								<TableRow key={request.id}>
+									<TableCell className='font-medium'>{request.description}</TableCell>
+									<TableCell>{request.author.name}</TableCell>
+									<TableCell>{request.fields[0].name}</TableCell>
+									<TableCell className='text-center'>
+										<Button onClick={() => acceptRequest(request.id, request.author.name)} className='bg-blue text-white hover:bg-[#3631C9] mx-auto'>
+											Accept
+										</Button>
+									</TableCell>
+								</TableRow>
+							))}
 						</TableBody>
 					</Table>
 				</div>

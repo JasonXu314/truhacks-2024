@@ -19,7 +19,6 @@ const Session = () => {
 	const [cameraOn, setCameraOn] = useState(true);
 	const [screenShareOn, setScreenShareOn] = useState(false);
 
-	// const [stream, setStream] = useState<MediaStream>();
 	const streamRef = useRef<MediaStream | null>();
 	const [callAccepted, setCallAccepted] = useState(false);
 
@@ -32,6 +31,7 @@ const Session = () => {
 
 	const router = useRouter();
 	const { tutor } = useContext(UserContext);
+	const { author } = router.query;
 
 	useEffect(() => {
 		if (!localStorage.getItem('token')) {
@@ -91,7 +91,6 @@ const Session = () => {
 			stream: streamRef.current!
 		});
 		peer.on('signal', (data) => {
-			console.log('SENT INITIAL SIGNAL FROM STUDENT TO TUTOR');
 			socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
 		});
 		peer.on('stream', (stream) => {
@@ -129,7 +128,7 @@ const Session = () => {
 		peer.on('error', (err) => console.log(err));
 
 		peer.on('connect', () => {
-            setOpen(false);
+			setOpen(false);
 		});
 
 		peer.signal(data);
@@ -198,7 +197,7 @@ const Session = () => {
 					<p className='font-bold text-xl text-blue'>EducateAll</p>
 				</div>
 				<p className='text-text text-4xl font-bold text-center'>
-					Welcome, {name}, to your <span className='text-blue'>Tutoring Session!</span>
+					Welcome, {name} and {author}, to your <span className='text-blue'>Tutoring Session!</span>
 				</p>
 				<div className='flex border-[1px] border-blue rounded-lg bg-[#E1E1F6] h-screen z-[20]'>
 					<div className='h-full w-full p-4'>
@@ -207,7 +206,7 @@ const Session = () => {
 					</div>
 					<div className='flex flex-col justify-between px-4 py-8 gap-4 w-1/3'>
 						<div>
-							<p>Eric Wong (Tutor)</p>
+							<p>{name} ({tutor ? "Tutor" : "Student"})</p>
 							{streamRef.current && (
 								<video
 									className='w-full border-2 border-blue border-solid'
@@ -221,7 +220,7 @@ const Session = () => {
 							)}
 						</div>
 						<div>
-							<p>Aiturgan Talant (Student)</p>
+							<p>{author} ({tutor ? "Student" : "Tutor"})</p>
 							{callAccepted && (
 								<video
 									className='w-full border-2 border-blue border-solid'

@@ -37,7 +37,7 @@ const Canvas: React.FC<Props> = ({ color, eraserEquipped, socketRef }) => {
 			}}
 			width={800}
 			height={600}
-			className="bg-white w-full h-full cursor-pen"
+			className={`bg-white w-full h-full ${eraserEquipped ? "cursor-eraser" : "cursor-pen"}`}
 		/>
 	);
 };

@@ -73,7 +73,8 @@ const config = {
 				'accordion-up': 'accordion-up 0.2s ease-out',
 			},
 			cursor: {
-				pen: 'url(/img/pen.png) 0 45, default'
+				pen: 'url(/img/pen.png) 0 45, default',
+				eraser: 'url(/img/eraser.png) 0 45, default',
 			}
 		}
 	},
