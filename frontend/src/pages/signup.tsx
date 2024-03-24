@@ -56,7 +56,7 @@ const Form = () => {
 			viewport={{ once: true }}
 			className="flex items-center justify-center pb-4 pt-20 md:py-20"
 		>
-			<div className="mx-auto my-auto max-w-lg  md:pr-0">
+			<div className=" mx-auto my-auto max-w-lg  md:pr-0 ">
 				<motion.div variants={primaryVariants} className="flex items-center flex-row gap-1 mb-3 pl-16">
 					<img src="img/logo.png" alt="Logo EducateAll" width="38" height="38" className=""></img>
 					<p className="font-bold text-2xl text-blue">EducateAll</p>
@@ -76,7 +76,7 @@ const Form = () => {
 					className="w-full"
 				>
 					<motion.div variants={primaryVariants} className="mb-2 w-full">
-						<label htmlFor="name-input" className="mb-1 inline-block text-sm font-medium">
+						<label htmlFor="name-input" className="mb-1 inline-block text-base font-medium">
 							Name<span className="text-red-600">*</span>
 						</label>
 						<input
@@ -90,7 +90,7 @@ const Form = () => {
 					</motion.div>
 
 					<motion.div variants={primaryVariants} className="mb-2 w-full">
-						<label htmlFor="phone-input" className="mb-1 inline-block text-sm font-medium">
+						<label htmlFor="phone-input" className="mb-1 inline-block text-base font-medium">
 							Phone Number<span className="text-red-600">*</span>
 						</label>
 						<PhoneInput
@@ -112,7 +112,7 @@ const Form = () => {
 					</motion.div>
 
 					<motion.div variants={primaryVariants} className="mb-2 w-full">
-						<label htmlFor="email-input" className="mb-1 inline-block text-sm font-medium">
+						<label htmlFor="email-input" className="mb-1 inline-block text-base font-medium">
 							Email<span className="text-red-600">*</span>
 						</label>
 						<input
@@ -127,7 +127,7 @@ const Form = () => {
 					</motion.div>
 
 					<motion.div variants={primaryVariants} className="mb-2 w-full">
-						<label htmlFor="password-input" className="mb-1 inline-block text-sm font-medium">
+						<label htmlFor="password-input" className="mb-1 inline-block text-base font-medium">
 							Password<span className="text-red-600">*</span>
 						</label>
 						<input
@@ -142,7 +142,7 @@ const Form = () => {
 					</motion.div>
 
 					<motion.div variants={primaryVariants} className="mb-4 w-full">
-						<label htmlFor="rt-password-input" className="mb-1 inline-block text-sm font-medium">
+						<label htmlFor="rt-password-input" className="mb-1 inline-block text-base font-medium">
 							Confirm Password<span className="text-red-600">*</span>
 						</label>
 						<input
@@ -162,13 +162,13 @@ const Form = () => {
 							scale: 0.985,
 						}}
 						type="submit"
-						className="mb-1.5 w-full rounded bg-indigo-600 px-4 py-2 text-center font-medium text-white transition-colors hover:bg-indigo-700"
+						className="mt-3 mb-2 w-full rounded bg-indigo-600 px-4 py-2 text-center font-medium text-white transition-colors  text-base hover:bg-indigo-700"
 					>
 						Sign up
 					</motion.button>
-					<motion.p variants={primaryVariants} className="text-xs text-center">
+					<motion.p variants={primaryVariants} className="text-s text-center">
 						Already have an account?{' '}
-						<Link className="text-indigo-600 underline" href="/signin">
+						<Link className="text-indigo-600 underline hover:scale-105" href="/signin">
 							Sign in
 						</Link>
 					</motion.p>
