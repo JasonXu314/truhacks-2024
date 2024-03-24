@@ -10,14 +10,16 @@ const Navbar = () => {
 
 	const router = useRouter();
 
-	const { tutor } = useContext(UserContext);
+	const { tutor, update } = useContext(UserContext);
 
 	useEffect(() => {
 		setToken(localStorage.getItem('token'));
-	});
+	}, []);
 
 	const logout = () => {
 		localStorage.removeItem('token');
+        update();
+        
 		router.push('/');
 	};
 
