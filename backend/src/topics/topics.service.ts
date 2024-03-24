@@ -36,11 +36,15 @@ export class TopicsService {
 		return { ...topic, otp };
 	}
 
+	public async getAll(): Promise<(TopicRequest & { author: Pick<User, 'id' | 'name'> })[]> {
+		return this.db.topicRequest.findMany({ include: { author: { select: { id: true, name: true } } } });
+	}
+
 	public async makeOffer(user: User, data: string): Promise<string> {
 		return this.gateway.makeOffer(user.id, data);
 	}
 
-	public tutorJoin(user: User, topicId: number): string {
+	public tutorJoin(user: User, topicId: number): { signal: string; otp: string } {
 		return this.gateway.createTutorOTP(topicId, user);
 	}
 }

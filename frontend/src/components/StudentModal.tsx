@@ -4,7 +4,7 @@ import { FiAlertCircle } from 'react-icons/fi';
 import BarLoader from './BarLoader';
 import { useRouter } from 'next/router';
 
-const SpringModal = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: Dispatch<SetStateAction<boolean>> }) => {
+const StudentModal = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: Dispatch<SetStateAction<boolean>> }) => {
     const router = useRouter();
 
     const cancelRequest = () => {
@@ -56,4 +56,4 @@ const SpringModal = ({ isOpen, setIsOpen }: { isOpen: boolean; setIsOpen: Dispat
 	);
 };
 
-export default SpringModal;
+export default StudentModal;

@@ -56,7 +56,7 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 		return otp;
 	}
 
-	public createTutorOTP(topicId: number, user: Pick<User, 'id' | 'name'>): string {
+	public createTutorOTP(topicId: number, user: Pick<User, 'id' | 'name'>): { signal: string; otp: string } {
 		const otp = randomBytes(64).toString('hex');
 		const session = this.sessions.find((s) => s.topic.id === topicId);
 
@@ -83,7 +83,7 @@ export class AppGateway implements OnGatewayConnection<WebSocket>, OnGatewayDisc
 			return userData;
 		});
 
-		return otp;
+		return { otp, signal: session.offer! };
 	}
 
 	// Returns promise for return offer
