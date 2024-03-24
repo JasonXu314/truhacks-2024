@@ -56,7 +56,6 @@ const Session = () => {
 			console.error('no OTP');
 		} else {
 			const socket = new WebSocket(`${process.env.NEXT_PUBLIC_BACKEND_URL!.replace('http', 'ws')}/gateway`);
-			// const socket = new WebSocket(`ws://localhost:5000/gateway`);
 
 			socket.addEventListener('open', () => {
 				console.log('socket open');
@@ -68,7 +67,6 @@ const Session = () => {
 					(evt) => {
 						const msg = JSON.parse(evt.data);
 
-						console.log(msg);
 
 						if (msg.type === 'CLAIM_ACK') {
 							console.log('claim success');
@@ -148,9 +146,9 @@ const Session = () => {
 		});
 
 		peer.on('signal', (data) => {
-			console.log(data);
 			api.post('/api/topics/offer', { token, data: JSON.stringify(data) }).then((res) => {
-				const peerOffer = JSON.parse(res.data);
+				const peerOffer = res.data;
+                console.log(peerOffer)
 				peer.signal(peerOffer);
 				setCallAccepted(true);
 			});
@@ -164,8 +162,8 @@ const Session = () => {
 	};
 
 	const acceptCall = () => {
-        const token = localStorage.getItem('token');
-        
+		const token = localStorage.getItem('token');
+
 		setCallAccepted(true);
 		const peer = new Peer({
 			initiator: false,
@@ -173,22 +171,21 @@ const Session = () => {
 			stream: stream
 		});
 		peer.on('signal', (data) => {
-			console.log(data);
+            console.log(data)
 			api.post('/api/topics/offer', {
 				data: JSON.stringify(data),
-                token
+				token
 			});
 		});
 
 		peer.on('stream', (stream) => {
-			console.log('dasdasda');
 			partnerVideo.current.srcObject = stream;
 		});
 
 		const { data } = router.query;
-		console.log(router.query);
-		console.log(data);
+
 		if (typeof data === 'string') {
+            console.log(JSON.parse(data));
 			peer.signal(JSON.parse(data));
 		}
 	};
