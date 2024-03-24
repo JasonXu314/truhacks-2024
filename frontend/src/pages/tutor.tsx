@@ -1,11 +1,11 @@
 import SpringModal from '@/components/StudentModal';
 import { Button } from '@/components/ui/button';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { UserContext } from '@/contexts/UserContext';
 import api from '@/services/axiosConfig';
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 const Tutor = () => {
-	const [name, setName] = useState('');
 	const [init, setInit] = useState(true);
 	const [subject, setSubject] = useState('');
 	const [field, setField] = useState('');
@@ -15,32 +15,28 @@ const Tutor = () => {
 
 	const router = useRouter();
 
+	const { name } = useContext(UserContext);
+
 	useEffect(() => {
 		const token = localStorage.getItem('token');
-		if (!localStorage.getItem('token')) {
+		if (!token) {
 			// router.push('/signin');
 		}
+		setInit(false);
+	});
 
-		api.get(`/api/users/me?token=${token}`)
+	const acceptRequest = (id: number) => {
+		api.post('/api/topics/tutor-join', {
+			token: localStorage.getItem('token'),
+			id
+		})
 			.then((resp) => {
-				setName(resp.data.name);
-				api.get('/api/fields')
-					.then((resp2) => {
-						console.log(resp2);
-						setInit(false);
-					})
-					.catch((err) => {
-						console.log(err);
-					});
+				console.log(resp);
 			})
 			.catch((err) => {
 				console.log(err);
 			});
-
-		setInit(false); // comment out later
-	});
-
-	const acceptRequest = () => {};
+	};
 
 	if (init) {
 		return;
@@ -70,7 +66,7 @@ const Tutor = () => {
 								<TableCell>Eric Wong</TableCell>
 								<TableCell>Physics 1</TableCell>
 								<TableCell className='text-center'>
-									<Button onClick={() => acceptRequest()} className='bg-blue text-white hover:bg-[#3631C9] mx-auto'>
+									<Button onClick={() => acceptRequest(1)} className='bg-blue text-white hover:bg-[#3631C9] mx-auto'>
 										Accept
 									</Button>
 								</TableCell>
@@ -80,7 +76,7 @@ const Tutor = () => {
 								<TableCell>Eric Wong</TableCell>
 								<TableCell>Physics 1</TableCell>
 								<TableCell className='text-center'>
-									<Button onClick={() => acceptRequest()} className='bg-blue text-white hover:bg-[#3631C9] mx-auto'>
+									<Button onClick={() => acceptRequest(1)} className='bg-blue text-white hover:bg-[#3631C9] mx-auto'>
 										Accept
 									</Button>
 								</TableCell>

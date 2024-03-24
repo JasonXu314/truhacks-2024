@@ -44,12 +44,11 @@ const Session = () => {
 			setInit(false);
 		});
 
-        if (tutor) {
-            acceptCall();
-        }
-        else {
-            callPeer();
-        }
+		if (tutor) {
+			acceptCall();
+		} else {
+			callPeer();
+		}
 
 		if (!router.query.otp) {
 			console.error('no OTP');
@@ -137,10 +136,10 @@ const Session = () => {
 	};
 
 	// peer stuff
-    const callPeer = () => {
-        const token = localStorage.getItem('token');
+	const callPeer = () => {
+		const token = localStorage.getItem('token');
 
-        const peer = new Peer({
+		const peer = new Peer({
 			initiator: true,
 			trickle: false,
 			stream: stream
@@ -160,9 +159,9 @@ const Session = () => {
 				partnerVideo.current.srcObject = stream;
 			}
 		});
-    }
+	};
 
-    const acceptCall = () => {
+	const acceptCall = () => {
 		setCallAccepted(true);
 		const peer = new Peer({
 			initiator: false,
@@ -171,9 +170,9 @@ const Session = () => {
 		});
 		peer.on('signal', (data) => {
 			console.log(data);
-            api.post('/api/topics/tutor-join', {
-                data: JSON.stringify(data)
-            })
+			api.post('/api/topics/tutor-join', {
+				data: JSON.stringify(data)
+			});
 		});
 
 		peer.on('stream', (stream) => {
@@ -182,7 +181,7 @@ const Session = () => {
 		});
 
 		// peer.signal(JSON.parse(callerSignal));
-	}
+	};
 
 	if (init) {
 		return;
