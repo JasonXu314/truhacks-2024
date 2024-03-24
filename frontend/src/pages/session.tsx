@@ -65,8 +65,8 @@ const Session = () => {
 		if (!router.query.otp) {
 			console.error('no OTP');
 		} else {
-			// const socket = new WebSocket(`${process.env.NEXT_PUBLIC_BACKEND_URL!.replace('http', 'ws')}/gateway`);
-			const socket = new WebSocket(`ws://localhost:5000/gateway`);
+			const socket = new WebSocket(`${process.env.NEXT_PUBLIC_BACKEND_URL!.replace('http', 'ws')}/gateway`);
+			// const socket = new WebSocket(`ws://localhost:5000/gateway`);
 
 			socket.addEventListener('open', () => {
 				console.log('socket open');

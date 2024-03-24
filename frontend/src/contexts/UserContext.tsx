@@ -15,6 +15,7 @@ export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const [name, setName] = useState('');
 	const [tutor, setTutor] = useState(false);
 	const [peer, setPeer] = useState<Peer.Instance>(new Peer({ wrtc: wrtc }));
+    
 	useEffect(() => {
 		const token = localStorage.getItem('token');
 		if (token) {
@@ -28,7 +29,7 @@ export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
 					// localStorage.removeItem('token');
 				});
 		}
-	}, []);
+	}, [localStorage.getItem('token')]);
 
 	return <UserContext.Provider value={{ name, tutor, peer, setPeer }}>{children}</UserContext.Provider>;
 };

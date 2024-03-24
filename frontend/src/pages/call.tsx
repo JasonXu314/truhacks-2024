@@ -20,7 +20,7 @@ const Call = () => {
 				userVideo.current.srcObject = stream;
 			}
 		});
-	}, []);
+	});
 
 	function callPeer(id: any) {
 		const peer = new Peer({
