@@ -19,7 +19,7 @@ const Session = () => {
 	const [micOn, setMicOn] = useState(true);
 	const [cameraOn, setCameraOn] = useState(true);
 	const [screenShareOn, setScreenShareOn] = useState(false);
-	const [peer, setPeer] = useState<Peer.Instance>();
+	const [testPeer, setTestPeer] = useState<Peer.Instance>();
 	const [stream, setStream] = useState<MediaStream>();
 	const [callAccepted, setCallAccepted] = useState(false);
 
@@ -69,7 +69,14 @@ const Session = () => {
 					} else if (msg.type === 'JOIN') {
 						console.log('OTHER JOINED');
 						callUser(socket);
-					}
+					} else if (msg.type === 'SIGNAL') {
+                        if (tutor) {
+                            answerCall(socket, JSON.parse(msg.signal.signal));
+                        }
+                        else {
+
+                        }
+                    }
 				});
 			});
 
@@ -90,6 +97,7 @@ const Session = () => {
 			trickle: false,
 			stream: stream
 		});
+        setTestPeer(peer);
 		peer.on('signal', (data) => {
             console.log("SENT INITIAL SIGNAL FROM STUDENT TO TUTOR")
 			socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
@@ -101,17 +109,17 @@ const Session = () => {
             // }
 		});
 
-		socket.addEventListener('message', (evt) => {
-			const msg = JSON.parse(evt.data);
-			if (msg.type === 'SIGNAL') {
-				console.log("SIGNALED FROM STUDENT TO TUTOR");
-                setCallAccepted(true);
-				peer!.signal(JSON.parse(msg.signal.signal));
-			}
-		});
+		// socket.addEventListener('message', (evt) => {
+		// 	const msg = JSON.parse(evt.data);
+		// 	if (msg.type === 'SIGNAL') {
+		// 		console.log("SIGNALED FROM STUDENT TO TUTOR");
+        //         setCallAccepted(true);
+		// 		peer!.signal(JSON.parse(msg.signal.signal));
+		// 	}
+		// });
 	};
 
-	const answerCall = (socket: WebSocket) => {
+	const answerCall = (socket: WebSocket, data: string) => {
 		setCallAccepted(true);
 		const peer = new Peer({
 			initiator: false,
@@ -127,14 +135,13 @@ const Session = () => {
                 partnerVideo.current.srcObject = stream;
             // }
 		});
-		socket.addEventListener('message', (evt) => {
-			const msg = JSON.parse(evt.data);
-			if (msg.type === 'SIGNAL') {
-				console.log("SIGNALED FROM TUTOR TO STUDENT");
-				peer!.signal(JSON.parse(msg.signal.signal));
-			}
-		});
+		peer.signal(data);
 	};
+
+    const finalCall = (data: string) => {
+        setCallAccepted(true);
+        testPeer!.signal(data);
+    }
 
 	// const initializePeers = () => {
 	// 	const tempPeer = new Peer({
