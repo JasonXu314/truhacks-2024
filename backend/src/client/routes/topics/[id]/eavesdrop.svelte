@@ -6,7 +6,7 @@
 	let canvas: HTMLCanvasElement | null = null;
 
 	onMount(() => {
-		const ws = new WebSocket('ws://localhost:5000/gateway');
+		const ws = new WebSocket(`${location.origin.replace('http', 'ws')}/gateway`);
 
 		ws.addEventListener('open', () => {
 			ws.send(JSON.stringify({ event: 'EAVESDROP', data: { id: $params.id } }));
@@ -17,4 +17,4 @@
 	});
 </script>
 
-<canvas bind:this={canvas} height={800} width={1200} style="cursor: none;" />
+<canvas bind:this={canvas} height={800} width={1200} style="cursor: none; background: white;" />

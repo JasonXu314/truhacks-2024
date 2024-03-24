@@ -33,7 +33,7 @@ export class OfferP2PDTO {
 }
 
 export class TutorJoinDTO {
-	@IsString()
+	@IsInt()
 	id: number = fi();
 
 	@IsString()
