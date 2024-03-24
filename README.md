@@ -48,8 +48,6 @@ Features:
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- GETTING STARTED -->
 ## How we built it
 Design: Figma, Canva. Link for the file.
@@ -83,7 +81,7 @@ Next.js and Express to build REST API.
 WebSocket API (WebSockets) to ensure a two-way interactive communication session between the user's browser and a server.
 
 
-### Installation
+## Installation
 
 This is an example of how to list things you need to use the software and how to install them.
 * npm
@@ -92,9 +90,12 @@ This is an example of how to list things you need to use the software and how to
   ```
 
 ## Team
-Eric Wong - Frontend/Backend Devlopment 
-Jason Xu - Backend Devlopment 
-Aiturgan Talant - Frontend Development, UX/UI 
+Eric Wong - Frontend/Backend Devlopment - [LinkedIn](https://www.linkedin.com/in/ewbyf/)
+
+
+Jason Xu - Backend Devlopment - [LinkedIn](https://www.linkedin.com/in/jx6pc/)
+
+Aiturgan Talant - Frontend Development, UX/UI - [LinkedIn](https://www.linkedin.com/in/aiturgantalant/)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -105,14 +106,12 @@ Aiturgan Talant - Frontend Development, UX/UI
 - Google Sign In
 - Profile Tab and have achivements, badges, to make the platform more engaging
 - AI Assistant
-
-
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ## Acknowledgments
 
 * [Illustrations Library](https://undraw.co/)
-* []()
+* [Web RTC Docs](https://webrtc.org/getting-started/overview)
 * []()
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
