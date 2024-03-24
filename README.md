@@ -10,13 +10,13 @@
   <a href="https://github.com/JasonXu314/truhacks-2024/tree/master">
     <img src="https://github.com/JasonXu314/truhacks-2024/blob/master/frontend/public/img/logoReadme.png" alt="Logo" width="200" height="200">
   </a>
-  <p align="center">
+   <br />
+    <br />
+  <p align="center">👋 
     Live interactive platform that connects students worldwide with passionate tutors. No matter your location, time zone, or budget, you can now access expert guidance and conquer any academic challenge. 
     <br />
-    <a href="https://github.com/JasonXu314/truhacks-2024/tree/master"><strong>Explore the docs »</strong></a>
     <br />
-    <br />
-    <a href="https://github.com/github_username/repo_name">View Demo</a>
+    <a href="https://github.com/github_username/repo_name"> 📘 View Demo</a>
     
   </p>
 </div>
@@ -28,7 +28,7 @@
   <summary>Table of Contents</summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#about-the-project">Problem Statment and Inspiration</a>
       <ul>
         <li><a href="#built-with">Built With</a></li>
       </ul>
@@ -42,9 +42,7 @@
     </li>
     <li><a href="#usage">Usage</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#team">Team</a></li>
     <li><a href="#acknowledgments">Acknowledgments</a></li>
   </ol>
 </details>
