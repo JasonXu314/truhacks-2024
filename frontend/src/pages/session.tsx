@@ -11,7 +11,6 @@ import { BsCameraVideo, BsCameraVideoOff, BsEraserFill, BsMic, BsMicMute } from 
 import { LuScreenShare, LuScreenShareOff } from 'react-icons/lu';
 import Peer from 'simple-peer';
 const Session = () => {
-	const [name, setName] = useState('');
 	const [init, setInit] = useState(true);
 	const [open, setOpen] = useState(true);
 	const [openEndModal, setOpenEndModal] = useState(false);
@@ -20,6 +19,7 @@ const Session = () => {
 	const [screenShareOn, setScreenShareOn] = useState(false);
 
 	const streamRef = useRef<MediaStream | null>();
+	const authorName = useRef<string>('');
 	const [callAccepted, setCallAccepted] = useState(false);
 
 	const [color, setColor] = useState('black');
@@ -30,7 +30,7 @@ const Session = () => {
 	const partnerVideo = useRef<any>(null);
 
 	const router = useRouter();
-	const { tutor } = useContext(UserContext);
+	const { name, tutor } = useContext(UserContext);
 	const { author } = router.query;
 
 	useEffect(() => {
@@ -63,7 +63,7 @@ const Session = () => {
 						console.log('claim success');
 						socketRef.current = socket;
 					} else if (msg.type === 'JOIN') {
-						console.log('OTHER JOINED');
+                        authorName.current = msg.user.name;
 						callUser(socket);
 					} else if (msg.type === 'SIGNAL') {
 						if (tutor) {
@@ -197,7 +197,7 @@ const Session = () => {
 					<p className='font-bold text-xl text-blue'>EducateAll</p>
 				</div>
 				<p className='text-text text-4xl font-bold text-center'>
-					Welcome, {name} and {author}, to your <span className='text-blue'>Tutoring Session!</span>
+					Welcome, {name} and {tutor ? author : authorName.current}, to your <span className='text-blue'>Tutoring Session!</span>
 				</p>
 				<div className='flex border-[1px] border-blue rounded-lg bg-[#E1E1F6] h-screen z-[20]'>
 					<div className='h-full w-full p-4'>
@@ -220,7 +220,7 @@ const Session = () => {
 							)}
 						</div>
 						<div>
-							<p>{author} ({tutor ? "Student" : "Tutor"})</p>
+							<p>{tutor ? author : authorName.current} ({tutor ? "Student" : "Tutor"})</p>
 							{callAccepted && (
 								<video
 									className='w-full border-2 border-blue border-solid'
