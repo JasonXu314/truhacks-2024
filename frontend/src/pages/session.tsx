@@ -66,10 +66,6 @@ const Session = () => {
 						console.log('claim success');
 
 						socketRef.current = socket;
-					} else if (msg.type === 'SIGNAL') {
-						console.log(msg);
-						console.log(msg.signal);
-						peer!.signal(JSON.parse(msg.signal.signal));
 					} else if (msg.type === 'JOIN') {
 						console.log('OTHER JOINED');
 						callUser(socket);
@@ -98,14 +94,17 @@ const Session = () => {
 			socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
 		});
 		peer.on('stream', (stream) => {
-			userVideo.current.srcObject = stream;
+			if (partnerVideo.current) {
+                partnerVideo.current.srcObject = stream;
+            }
 		});
 
 		socket.addEventListener('message', (evt) => {
 			const msg = JSON.parse(evt.data);
 			if (msg.type === 'SIGNAL') {
-				console.log(msg.signal);
+				console.log(JSON.parse(msg.signal.signal));
 				peer!.signal(JSON.parse(msg.signal.signal));
+                setCallAccepted(true);
 			}
 		});
 	};
@@ -121,12 +120,14 @@ const Session = () => {
 			socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
 		});
 		peer.on('stream', (stream) => {
-			userVideo.current.srcObject = stream;
+            if (partnerVideo.current) {
+                partnerVideo.current.srcObject = stream;
+            }
 		});
 		socket.addEventListener('message', (evt) => {
 			const msg = JSON.parse(evt.data);
 			if (msg.type === 'SIGNAL') {
-				console.log(msg.signal);
+				console.log(JSON.parse(msg.signal.signal));
 				peer!.signal(JSON.parse(msg.signal.signal));
 			}
 		});
