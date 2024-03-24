@@ -91,18 +91,20 @@ const Session = () => {
 			stream: stream
 		});
 		peer.on('signal', (data) => {
+            console.log("SENT INITIAL SIGNAL FROM STUDENT TO TUTOR")
 			socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
 		});
 		peer.on('stream', (stream) => {
-			if (partnerVideo.current) {
+			// if (partnerVideo.current) {
+                console.log("UPDATED PARTNER VIDEO")
                 partnerVideo.current.srcObject = stream;
-            }
+            // }
 		});
 
 		socket.addEventListener('message', (evt) => {
 			const msg = JSON.parse(evt.data);
 			if (msg.type === 'SIGNAL') {
-				console.log(JSON.parse(msg.signal.signal));
+				console.log("SIGNALED FROM STUDENT TO TUTOR");
 				peer!.signal(JSON.parse(msg.signal.signal));
                 setCallAccepted(true);
 			}
@@ -120,14 +122,15 @@ const Session = () => {
 			socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
 		});
 		peer.on('stream', (stream) => {
-            if (partnerVideo.current) {
+            // if (partnerVideo.current) {
+                console.log("UPDATED PARTNER VIDEO")
                 partnerVideo.current.srcObject = stream;
-            }
+            // }
 		});
 		socket.addEventListener('message', (evt) => {
 			const msg = JSON.parse(evt.data);
 			if (msg.type === 'SIGNAL') {
-				console.log(JSON.parse(msg.signal.signal));
+				console.log("SIGNALED FROM TUTOR TO STUDENT");
 				peer!.signal(JSON.parse(msg.signal.signal));
 			}
 		});
