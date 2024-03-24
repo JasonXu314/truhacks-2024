@@ -48,12 +48,6 @@ const Session = () => {
 	}, [init]);
 
 	useEffect(() => {
-		// if (tutor) {
-		// 	acceptCall();
-		// } else {
-		// 	callPeer();
-		// }
-
 		if (!router.query.otp) {
 			console.error('no OTP');
 		} else {
@@ -62,11 +56,9 @@ const Session = () => {
 				console.log('socket open');
 
 				socket.send(JSON.stringify({ event: 'CLAIM', data: { otp: router.query.otp } }));
-                if (tutor) {
-                    initializePeers();
-                } 
-
-                
+				if (tutor) {
+					answerCall(socket);
+				}
 
 				socket.addEventListener('message', (evt) => {
 					const msg = JSON.parse(evt.data);
@@ -80,7 +72,7 @@ const Session = () => {
 						peer!.signal(JSON.parse(msg.signal.signal));
 					} else if (msg.type === 'JOIN') {
 						console.log('OTHER JOINED');
-						initializePeers();
+						callUser(socket);
 					}
 				});
 			});
@@ -96,23 +88,67 @@ const Session = () => {
 		// eslint-disable-next-line react-hooks/exhaustive-deps
 	}, []);
 
-	const initializePeers = () => {
-		const tempPeer = new Peer({
-			initiator: (tutor ? false : true),
+	const callUser = (socket: WebSocket) => {
+		const peer = new Peer({
+			initiator: true,
 			trickle: false,
 			stream: stream
 		});
-		setPeer(tempPeer);
-
-		tempPeer.on('signal', (data) => {
-			console.log(data);
-			socketRef.current?.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
+		peer.on('signal', (data) => {
+			socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
+		});
+		peer.on('stream', (stream) => {
+			userVideo.current.srcObject = stream;
 		});
 
-		tempPeer.on('stream', (stream) => {
-			partnerVideo.current.srcObject = stream;
+		socket.addEventListener('message', (evt) => {
+			const msg = JSON.parse(evt.data);
+			if (msg.type === 'SIGNAL') {
+				console.log(msg.signal);
+				peer!.signal(JSON.parse(msg.signal.signal));
+			}
 		});
 	};
+
+	const answerCall = (socket: WebSocket) => {
+		setCallAccepted(true);
+		const peer = new Peer({
+			initiator: false,
+			trickle: false,
+			stream: stream
+		});
+		peer.on('signal', (data) => {
+			socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
+		});
+		peer.on('stream', (stream) => {
+			userVideo.current.srcObject = stream;
+		});
+		socket.addEventListener('message', (evt) => {
+			const msg = JSON.parse(evt.data);
+			if (msg.type === 'SIGNAL') {
+				console.log(msg.signal);
+				peer!.signal(JSON.parse(msg.signal.signal));
+			}
+		});
+	};
+
+	// const initializePeers = () => {
+	// 	const tempPeer = new Peer({
+	// 		initiator: tutor ? false : true,
+	// 		trickle: false,
+	// 		stream: stream
+	// 	});
+	// 	setPeer(tempPeer);
+
+	// 	tempPeer.on('signal', (data) => {
+	// 		console.log(data);
+	// 		socketRef.current?.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
+	// 	});
+
+	// 	tempPeer.on('stream', (stream) => {
+	// 		partnerVideo.current.srcObject = stream;
+	// 	});
+	// };
 
 	const endSession = () => {
 		setOpenEndModal(true);
