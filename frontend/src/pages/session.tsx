@@ -29,6 +29,7 @@ const Session = () => {
 	const userVideo = useRef<any>(null);
 	const socketRef = useRef<WebSocket | null>(null);
 	const partnerVideo = useRef<any>(null);
+	const textRef = useRef<any>(null);
 
 	const router = useRouter();
 	const { tutor } = useContext(UserContext);
@@ -48,12 +49,6 @@ const Session = () => {
 			setInit(false);
 		});
 	}, [init]);
-
-    const finalCall = (data: string) => {
-		console.log('FINISHED');
-		setCallAccepted(true);
-		testPeer!.signal(data);
-	};
 
 	useEffect(() => {
 		if (!router.query.otp) {
@@ -76,8 +71,6 @@ const Session = () => {
 					} else if (msg.type === 'SIGNAL') {
 						if (tutor) {
 							answerCall(socket, JSON.parse(msg.signal.signal));
-						} else {
-							finalCall(JSON.parse(msg.signal.signal));
 						}
 					}
 				});
@@ -92,7 +85,7 @@ const Session = () => {
 			});
 		}
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-	}, [finalCall]);
+	}, []);
 
 	const callUser = (socket: WebSocket) => {
 		const peer = new Peer({
@@ -103,7 +96,7 @@ const Session = () => {
 		setTestPeer(peer);
 		peer.on('signal', (data) => {
 			console.log('SENT INITIAL SIGNAL FROM STUDENT TO TUTOR');
-			socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
+			// socket.send(JSON.stringify({ event: 'SIGNAL', data: { signal: JSON.stringify(data) } }));
 			setTest(test);
 		});
 		peer.on('stream', (stream) => {
@@ -118,14 +111,14 @@ const Session = () => {
 		peer.on('connect', () => {
 			console.log('CONNECTED');
 		});
-		// socket.addEventListener('message', (evt) => {
-		// 	const msg = JSON.parse(evt.data);
-		// 	if (msg.type === 'SIGNAL') {
-		// 		console.log("SIGNALED FROM STUDENT TO TUTOR");
-		//         setCallAccepted(true);
-		// 		peer!.signal(JSON.parse(msg.signal.signal));
-		// 	}
-		// });
+		socket.addEventListener('message', (evt) => {
+			const msg = JSON.parse(evt.data);
+			if (msg.type === 'SIGNAL') {
+				console.log("SIGNALED FROM STUDENT TO TUTOR");
+		        setCallAccepted(true);
+				peer!.signal(JSON.parse(msg.signal.signal));
+			}
+		});
 	};
 
 	const answerCall = (socket: WebSocket, data: string) => {
@@ -154,6 +147,12 @@ const Session = () => {
 		console.log('TUTOR SIGNALED DATA');
 		peer.signal(data);
 	};
+
+	// const finalCall = (data: string) => {
+	// 	console.log('FINISHED');
+	// 	setCallAccepted(true);
+	// 	testPeer!.signal(data);
+	// };
 
 	// const initializePeers = () => {
 	// 	const tempPeer = new Peer({
@@ -301,7 +300,7 @@ const Session = () => {
 					<img src="img/logo.png" alt="Logo EducateAll" width="36" height="36"></img>
 					<p className="font-bold text-xl text-blue">EducateAll</p>
 				</div>
-				<textarea value={test} onChange={(e) => setTest(e.target.value)} className="text-black"></textarea>
+				<textarea value={test} onChange={(e) => setTest(e.target.value)} className="text-black" ref={textRef}></textarea>
 				<p className="text-text text-4xl font-bold text-center">
 					Welcome, {name}, to your <span className="text-blue">Tutoring Session!</span>
 				</p>
