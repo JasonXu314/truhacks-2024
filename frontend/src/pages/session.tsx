@@ -151,7 +151,7 @@ const Session = () => {
 			console.log(data);
 			api.post('/api/topics/offer', { token, data: JSON.stringify(data) }).then((res) => {
 				const peerOffer = JSON.parse(res.data);
-				peer.signal(JSON.parse(peerOffer));
+				peer.signal(peerOffer);
 				setCallAccepted(true);
 			});
 		});
@@ -182,13 +182,12 @@ const Session = () => {
 			partnerVideo.current.srcObject = stream;
 		});
 
-        const { signal } = router.query;
-        console.log(router.query);
-        console.log(signal)
-        if (typeof signal === 'string') {
-            peer.signal(JSON.parse(signal));
-        }
-
+		const { data } = router.query;
+		console.log(router.query);
+		console.log(data);
+		if (typeof data === 'string') {
+			peer.signal(JSON.parse(data));
+		}
 	};
 
 	if (init) {
@@ -216,10 +215,10 @@ const Session = () => {
 						<p>Eric Wong (Tutor)</p>
 						{stream && <video className='w-full border-2 border-blue border-solid' muted playsInline ref={userVideo} autoPlay />}
 					</div>
-					{/* <div>
+					<div>
 						<p>Aiturgan Talant (Student)</p>
 						{callAccepted && <video className='w-full border-2 border-blue border-solid' playsInline ref={partnerVideo} autoPlay />}
-					</div> */}
+					</div>
 				</div>
 			</div>
 			<div className='h-24 w-[95%] bg-blue mx-auto rounded-lg flex gap-6 items-center justify-center px-8'>
