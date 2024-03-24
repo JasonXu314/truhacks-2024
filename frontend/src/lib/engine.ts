@@ -10,6 +10,7 @@ export class Engine {
 	private _color: string;
 	private _eraser: boolean;
 	private _peerStroke: Stroke | null;
+	private _dirty: boolean;
 
 	public constructor(public readonly canvas: HTMLCanvasElement, public readonly socketRef: MutableRefObject<WebSocket | null>) {
 		this.ctx = canvas.getContext('2d')!;
@@ -18,32 +19,71 @@ export class Engine {
 		this._color = 'black';
 		this._eraser = true;
 		this._peerStroke = null;
+		this._dirty = false;
 
 		canvas.addEventListener('mousedown', (evt) => {
 			if (evt.target === canvas) {
-				const newStroke = new Stroke([[evt.offsetX, evt.offsetY]]);
+				if (this._eraser) {
+					const moveListener = (evt: MouseEvent) => {
+						const [x, y]: [number, number] = [evt.offsetX, evt.offsetY];
 
-				this._strokes.push(newStroke);
-				socketRef.current?.send(JSON.stringify({ event: 'NEW_STROKE', data: newStroke.toPlain() }));
+						let deleted = false;
 
-				const moveListener = (evt: MouseEvent) => {
-					const pt: [number, number] = [evt.offsetX, evt.offsetY];
+						for (let i = 0; i < this._strokes.length; i++) {
+							const stroke = this._strokes[i];
+							const path = new Path2D();
 
-					newStroke.extend(this.ctx, pt, this._color);
-					socketRef.current?.send(JSON.stringify({ event: 'EXTEND', data: pt }));
-				};
+							path.moveTo(...stroke.pts[0]);
+							stroke.pts.slice(1).forEach((pt) => path.lineTo(...pt));
+							this.ctx.lineWidth = 5;
 
-				const stopListener = () => {
-					canvas.removeEventListener('mousemove', moveListener);
-					socketRef.current?.send(JSON.stringify({ event: 'END_STROKE' }));
-				};
+							if (this.ctx.isPointInStroke(path, x, y)) {
+								deleted = true;
+								this._strokes.splice(i, 1);
+								i--;
+								socketRef.current?.send(JSON.stringify({ event: 'DELETE_STROKE', data: stroke.id }));
+							}
 
-				canvas.addEventListener('mousemove', moveListener);
-				canvas.addEventListener('mouseup', stopListener);
-				canvas.addEventListener('mouseout', stopListener);
+							this.ctx.lineWidth = 1;
+						}
 
-				if (evt.button === 2) {
-					console.log(this._strokes);
+						if (deleted) {
+							this._dirty = true;
+						}
+					};
+
+					const stopListener = () => {
+						canvas.removeEventListener('mousemove', moveListener);
+					};
+
+					canvas.addEventListener('mousemove', moveListener);
+					canvas.addEventListener('mouseup', stopListener);
+					canvas.addEventListener('mouseout', stopListener);
+				} else {
+					const newStroke = new Stroke([[evt.offsetX, evt.offsetY]], this._color);
+
+					this._strokes.push(newStroke);
+					socketRef.current?.send(JSON.stringify({ event: 'NEW_STROKE', data: newStroke.toPlain() }));
+
+					const moveListener = (evt: MouseEvent) => {
+						const pt: [number, number] = [evt.offsetX, evt.offsetY];
+
+						newStroke.extend(this.ctx, pt);
+						socketRef.current?.send(JSON.stringify({ event: 'EXTEND', data: pt }));
+					};
+
+					const stopListener = () => {
+						canvas.removeEventListener('mousemove', moveListener);
+						socketRef.current?.send(JSON.stringify({ event: 'END_STROKE' }));
+					};
+
+					canvas.addEventListener('mousemove', moveListener);
+					canvas.addEventListener('mouseup', stopListener);
+					canvas.addEventListener('mouseout', stopListener);
+
+					if (evt.button === 2) {
+						console.log(this._strokes);
+					}
 				}
 			}
 		});
@@ -56,14 +96,20 @@ export class Engine {
 
 				switch (msg.type) {
 					case 'NEW_STROKE':
-						this._peerStroke = new Stroke(msg.pts, msg.id);
+						this._peerStroke = new Stroke(msg.pts, msg.id, msg.color);
 						this._strokes.push(this._peerStroke);
 						break;
 					case 'EXTEND':
-						this._peerStroke?.extend(this.ctx, msg.pt, this._color);
+						this._peerStroke?.extend(this.ctx, msg.pt);
 						break;
 					case 'END_STROKE':
 						this._peerStroke = null;
+						break;
+					case 'DELETE_STROKE':
+						this._strokes.splice(
+							this._strokes.findIndex((s) => s.id === msg.id),
+							1
+						);
 						break;
 				}
 			});
@@ -85,6 +131,13 @@ export class Engine {
 	private _tick(): void {
 		this._af = requestAnimationFrame(() => {
 			this._tick();
+
+			if (this._dirty) {
+				this._dirty = false;
+				this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+				this._strokes.forEach((stroke) => stroke.render(this.ctx));
+			}
 		});
 	}
 }
+
