@@ -22,7 +22,7 @@ export class Engine {
 
 			switch (msg.type) {
 				case 'NEW_STROKE':
-					this._peerStroke = new Stroke(msg.pts, msg.id, msg.color);
+					this._peerStroke = new Stroke(msg.pts, msg.color, msg.id);
 					this._strokes.push(this._peerStroke);
 					break;
 				case 'EXTEND':
