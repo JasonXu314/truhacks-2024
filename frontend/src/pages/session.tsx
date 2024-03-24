@@ -29,7 +29,7 @@ const Session = () => {
 	const partnerVideo = useRef<any>(null);
 
 	const router = useRouter();
-	const { tutor, peer, setPeer } = useContext(UserContext);
+	const { tutor } = useContext(UserContext);
 
 	useEffect(() => {
 		if (!localStorage.getItem('token')) {
@@ -146,6 +146,7 @@ const Session = () => {
 		});
 
 		peer.on('signal', (data) => {
+            console.log(data)
 			api.post('/api/topics/offer', { token, data: JSON.stringify(data) }).then((res) => {
 				const peerOffer = res.data;
                 console.log(peerOffer)

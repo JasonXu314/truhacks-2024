@@ -77,7 +77,7 @@ const Tutor = () => {
 								<TableCell>Eric Wong</TableCell>
 								<TableCell>Physics 1</TableCell>
 								<TableCell className='text-center'>
-									<Button onClick={() => acceptRequest(59)} className='bg-blue text-white hover:bg-[#3631C9] mx-auto'>
+									<Button onClick={() => acceptRequest(60)} className='bg-blue text-white hover:bg-[#3631C9] mx-auto'>
 										Accept
 									</Button>
 								</TableCell>

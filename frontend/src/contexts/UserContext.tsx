@@ -1,28 +1,22 @@
 import api from '@/services/axiosConfig';
 import { PropsWithChildren, createContext, useEffect, useState } from 'react';
-import Peer from 'simple-peer';
-
-var wrtc = require('wrtc');
 
 export const UserContext = createContext({
 	name: '',
 	tutor: false,
-	peer: new Peer({ wrtc: wrtc }),
-	setPeer: (e: Peer.Instance) => {},
 	update: () => {}
 });
 
 export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
 	const [name, setName] = useState('');
 	const [tutor, setTutor] = useState(false);
-	const [peer, setPeer] = useState<Peer.Instance>(new Peer({ wrtc: wrtc }));
-    
+
 	useEffect(() => {
 		update();
 	}, []);
 
-    const update = () => {
-        const token = localStorage.getItem('token');
+	const update = () => {
+		const token = localStorage.getItem('token');
 		if (token) {
 			api.get(`/api/users/me?token=${token}`)
 				.then((resp) => {
@@ -34,8 +28,7 @@ export const UserProvider: React.FC<PropsWithChildren> = ({ children }) => {
 					// localStorage.removeItem('token');
 				});
 		}
-    }
+	};
 
-
-	return <UserContext.Provider value={{ name, tutor, peer, setPeer, update }}>{children}</UserContext.Provider>;
+	return <UserContext.Provider value={{ name, tutor, update }}>{children}</UserContext.Provider>;
 };
