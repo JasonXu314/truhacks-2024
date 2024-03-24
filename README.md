@@ -52,6 +52,24 @@ Features:
 
 <!-- GETTING STARTED -->
 ## How we built it
+Design: Figma, Canva. Link for the file.
+<br/>
+https://www.figma.com/file/hAdIcWvibrVcMLhtwVwwoz/TruHacks?type=design&node-id=0%3A1&mode=design&t=VsIXoefMQemjE9rR-1
+
+Have built a prototype, developed friendly UI and made sure the design is consistent and easy to navigate.
+
+**We used Next.js to create a fullstack application.**
+
+## Frontend: 
+WebRTC API (open source application) to establish video, audio streaming. WebRTC its an open-source application that covers, on a high level, two different technologies: media capture devices and peer-to-peer connectivity. Learning how to live-stream video and audio was quite a challenge. We faced several struggles working with this: couldn’t connect to a peer, couldn’t see/hear the peer. 
+<br/>
+For better interaction and streamlined learning, we incorporated a whiteboard using in-built Javascript API canvas. We were able to make a whiteboard with eraser and different colored pencil. One of the challenges we faced: making the whiteboard collaborative. We used web-sockets to ensure sable connection between the server and the client. It was really good decision, since they are perfect for real time updates.
+<br/>
+Tailwind CSS, Shadcn/Hoverdev Components
+for quick UI building
+## Backend:
+
+
 
 
 
