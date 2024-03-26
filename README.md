@@ -15,7 +15,8 @@
 <div align="center">
 <a href="https://youtu.be/fsC-bcyBFTs">📷 View Demo</a>
 </div>
-    <br />
+<br />
+
 ![image](https://github.com/JasonXu314/truhacks-2024/assets/86029622/bb59e15e-33d1-46df-80c2-eb4ef17489b4)
 
 ![image](https://github.com/JasonXu314/truhacks-2024/assets/86029622/f368eac5-1603-4879-8adc-bb1b6fe93646)
