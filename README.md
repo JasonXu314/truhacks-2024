@@ -14,8 +14,9 @@
     
   </p>
 </div>
-
+<div align="center">
 <a href="https://youtu.be/fsC-bcyBFTs">View Demo</a>
+</div>
 
 ![image](https://github.com/JasonXu314/truhacks-2024/assets/86029622/bb59e15e-33d1-46df-80c2-eb4ef17489b4)
 
